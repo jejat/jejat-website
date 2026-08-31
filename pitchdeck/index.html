@@ -225,7 +225,8 @@
     gap: 48px; align-items: end;
   }
   @media (max-width: 860px) { .price-machine { grid-template-columns: 1fr; } }
-  .ptabs { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
+  .ptabs { display: flex; gap: 10px; flex-wrap: wrap; margin: 30px 0; }
+  .ptab .ic { margin-right: 6px; }
   .ptab {
     font-family: var(--display); font-weight: 700; font-size: 0.95rem;
     background: #fff; color: var(--ink);
@@ -609,9 +610,9 @@
     <p class="sub rv d1">Street merchants layer markup on markup, facing a population that survived a war on low incomes. Pick a product and watch the street stack the price:</p>
 
     <div class="ptabs rv d2" id="ptabs" role="tablist">
-      <button class="ptab active" data-p="0">Baby stroller</button>
-      <button class="ptab" data-p="1">Kids' sneakers</button>
-      <button class="ptab" data-p="2">Phone charger</button>
+      <button class="ptab active" data-p="0"><span class="ic">👶</span>Baby stroller</button>
+      <button class="ptab" data-p="1"><span class="ic">👟</span>Kids' sneakers</button>
+      <button class="ptab" data-p="2"><span class="ic">🔌</span>Phone charger</button>
     </div>
 
     <div class="price-machine rv d2" id="priceMachine">
