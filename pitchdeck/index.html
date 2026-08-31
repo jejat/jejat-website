@@ -1,0 +1,972 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jejat.com — Investor Deck</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+  :root {
+    --orange: #F7941D;
+    --orange-deep: #E07C0A;
+    --red: #CE2029;
+    --ink: #231A12;
+    --muted: #6E5F4E;
+    --ground: #FFFDF8;
+    --cream: #FBF1DD;
+    --card: #FAF6EC;
+    --line: #EADFCB;
+    --display: "Baloo Bhaijaan 2", "Segoe UI", Tahoma, sans-serif;
+    --body: "Nunito", "Segoe UI", Tahoma, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  a { color: var(--orange-deep); }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+
+  /* ---------- top bar + progress ---------- */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    background: rgba(255, 253, 248, 0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .wordmark {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.35rem;
+    line-height: 1;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .wordmark span { color: var(--orange); }
+  .confidential {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--red);
+    border: 1.5px solid currentColor;
+    border-radius: 999px;
+    padding: 3px 12px;
+    white-space: nowrap;
+  }
+  .progress-track {
+    position: relative;
+    height: 5px;
+    background: var(--cream);
+  }
+  .progress-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0%;
+    background: linear-gradient(90deg, var(--orange), var(--orange-deep));
+  }
+  .progress-chicken {
+    position: absolute;
+    left: 0%;
+    bottom: -3px;
+    width: 34px;
+    margin-left: -17px;
+    transform: scaleX(1);
+  }
+
+  /* ---------- sections ---------- */
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  section {
+    padding: clamp(64px, 10vh, 110px) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  section:last-of-type { border-bottom: 0; }
+
+  .eyebrow {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 0.88rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange-deep);
+    margin: 0 0 10px;
+  }
+  .eyebrow b { color: var(--red); font-weight: 800; }
+
+  h1, h2 {
+    font-family: var(--display);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0 0 14px;
+  }
+  h1 { font-size: clamp(2.3rem, 6vw, 4rem); font-weight: 800; }
+  h2 { font-size: clamp(1.7rem, 3.6vw, 2.5rem); font-weight: 800; }
+  .sub {
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    color: var(--muted);
+    max-width: 42em;
+    margin: 0;
+  }
+  .sub strong { color: var(--red); }
+
+  /* reveal on scroll */
+  .rv { opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.2,.7,.3,1); }
+  .rv.in { opacity: 1; transform: none; }
+  .rv2 { transition-delay: 0.12s; }
+  .rv3 { transition-delay: 0.24s; }
+
+  /* ---------- hero ---------- */
+  .hero {
+    padding-top: clamp(120px, 18vh, 180px);
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero img.chick {
+    width: min(300px, 60vw);
+    display: block;
+    margin: 0 auto 8px;
+  }
+  .hero .date {
+    margin-top: 26px;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .scroll-hint {
+    margin: 34px auto 0;
+    width: 26px; height: 42px;
+    border: 2.5px solid var(--muted);
+    border-radius: 14px;
+    position: relative;
+    opacity: 0.7;
+  }
+  .scroll-hint::after {
+    content: "";
+    position: absolute;
+    top: 7px; left: 50%;
+    width: 4px; height: 9px;
+    margin-left: -2px;
+    border-radius: 2px;
+    background: var(--orange-deep);
+    animation: hint 1.6s ease-in-out infinite;
+  }
+  @keyframes hint {
+    0%, 100% { transform: translateY(0); opacity: 1; }
+    70% { transform: translateY(12px); opacity: 0; }
+  }
+
+  /* ---------- generic cards & strips ---------- */
+  .cards {
+    display: grid;
+    gap: 18px;
+    margin-top: 34px;
+  }
+  .cards.c2 { grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+  .cards.c3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 26px 24px;
+  }
+  .card .big {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(2.4rem, 5vw, 3.4rem);
+    line-height: 1;
+    color: var(--orange);
+  }
+  .card h3 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin: 10px 0 6px;
+  }
+  .card p { margin: 0; color: var(--muted); font-size: 0.98rem; }
+  .card .foot {
+    margin-top: 12px;
+    font-weight: 800;
+    font-size: 0.92rem;
+    color: var(--orange-deep);
+  }
+  .card.accent { background: var(--cream); }
+
+  .strip {
+    margin-top: 34px;
+    background: linear-gradient(90deg, var(--orange), var(--orange-deep));
+    color: #fff;
+    border-radius: 12px;
+    padding: 16px 24px;
+    font-weight: 800;
+    font-size: clamp(0.95rem, 1.8vw, 1.08rem);
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .note { margin-top: 14px; font-size: 0.85rem; color: var(--muted); }
+
+  /* ---------- founder ---------- */
+  .founder-grid {
+    display: grid;
+    grid-template-columns: minmax(220px, 300px) 1fr;
+    gap: 40px;
+    align-items: start;
+    margin-top: 34px;
+  }
+  @media (max-width: 720px) { .founder-grid { grid-template-columns: 1fr; } }
+  .founder-photo {
+    width: 100%;
+    border-radius: 14px;
+    display: block;
+    border: 1px solid var(--line);
+  }
+  .founder-name {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.7rem;
+    margin: 0 0 2px;
+  }
+  .founder-role { color: var(--muted); font-weight: 700; margin: 0 0 18px; }
+  ul.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  ul.checks li { padding-left: 30px; position: relative; }
+  ul.checks li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 7px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+  .pill {
+    display: inline-block;
+    margin-top: 22px;
+    background: var(--cream);
+    border: 2px dashed var(--orange);
+    border-radius: 12px;
+    padding: 12px 18px;
+    font-weight: 800;
+    color: var(--ink);
+    transform: rotate(-1.2deg);
+  }
+  .pill em { color: var(--orange-deep); font-style: normal; }
+
+  /* ---------- tables ---------- */
+  .tablewrap { overflow-x: auto; margin-top: 34px; border: 1px solid var(--line); border-radius: 14px; }
+  table { border-collapse: collapse; width: 100%; min-width: 560px; background: #fff; }
+  th, td { padding: 14px 18px; text-align: left; font-size: 0.98rem; }
+  thead th {
+    background: var(--orange);
+    color: #fff;
+    font-family: var(--display);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  tbody tr:nth-child(even) { background: #FBF8F1; }
+  td .markup { font-family: var(--display); font-weight: 800; color: var(--orange-deep); font-size: 1.15rem; }
+  .mono { font-variant-numeric: tabular-nums; }
+
+  .stat-aside {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 26px;
+  }
+  .stat-aside .huge {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(3rem, 8vw, 4.6rem);
+    line-height: 1;
+    color: var(--orange);
+  }
+  .stat-aside .label { color: var(--muted); font-weight: 700; max-width: 16em; }
+
+  /* competition table marks */
+  td.no { color: var(--red); font-weight: 800; }
+  td.mid { color: var(--muted); font-weight: 700; }
+  td.yes { color: #1D8A44; font-weight: 800; }
+  th.jejat, td.jejat { background: var(--cream); }
+  thead th.jejat { background: var(--orange-deep); }
+  td small, th small { display: block; font-weight: 600; color: var(--muted); font-size: 0.8rem; }
+  thead th small { color: #FFE3BC; }
+
+  /* ---------- product mockups ---------- */
+  .mock { height: 210px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .phone {
+    width: 120px; height: 200px;
+    border: 3px solid var(--ink);
+    border-radius: 18px;
+    background: #fff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .phone .bar { background: var(--orange); color: #fff; font-size: 0.62rem; font-weight: 800; padding: 5px 8px; font-family: var(--display); }
+  .phone .grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 8px; }
+  .phone .grid i { background: var(--cream); border-radius: 5px; position: relative; }
+  .phone .grid i::after { content: ""; position: absolute; left: 6px; right: 18px; bottom: 6px; height: 4px; border-radius: 2px; background: var(--orange); }
+  .phone .cta { margin: 0 8px 8px; background: var(--orange); border-radius: 6px; color: #fff; text-align: center; font-size: 0.6rem; font-weight: 800; padding: 4px; font-family: var(--display); }
+  .phone .map { flex: 1; background: linear-gradient(#F3F7F0, #F3F7F0), repeating-linear-gradient(0deg, transparent 0 26px, #E2EADF 26px 28px), repeating-linear-gradient(90deg, transparent 0 26px, #E2EADF 26px 28px); background-blend-mode: multiply; position: relative; }
+  .phone .map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .phone .eta { margin: 0 8px 8px; border: 1.5px solid var(--line); border-radius: 6px; text-align: center; font-size: 0.6rem; font-weight: 800; padding: 4px; }
+  .screen {
+    width: 210px; height: 150px;
+    border: 3px solid var(--ink);
+    border-radius: 10px;
+    background: #fff;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .screen .bar { background: var(--ink); color: #fff; font-size: 0.6rem; font-weight: 800; padding: 4px 8px; }
+  .screen .rows { flex: 1; padding: 8px; display: grid; gap: 5px; align-content: start; }
+  .screen .rows i { display: grid; grid-template-columns: 1fr 34px 22px; gap: 6px; align-items: center; }
+  .screen .rows i::before { content: ""; height: 7px; border-radius: 3px; background: #EEE6D6; }
+  .screen .rows i::after { content: ""; height: 7px; border-radius: 3px; background: var(--cream); border: 1px solid var(--line); grid-column: 2; }
+  .screen .rows i b { font-size: 0.55rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  /* ---------- market circles ---------- */
+  .market-grid {
+    display: grid;
+    grid-template-columns: minmax(240px, 380px) 1fr;
+    gap: 40px;
+    align-items: center;
+    margin-top: 34px;
+  }
+  @media (max-width: 760px) { .market-grid { grid-template-columns: 1fr; } }
+  .circles { position: relative; aspect-ratio: 1; max-width: 380px; margin: 0 auto; width: 100%; }
+  .circle-outer {
+    position: absolute; inset: 0;
+    border: 3px solid var(--orange);
+    border-radius: 50%;
+    display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: 12%;
+    text-align: center;
+  }
+  .circle-inner {
+    position: absolute;
+    top: 8%; left: 50%;
+    width: 46%; aspect-ratio: 1;
+    transform: translateX(-50%);
+    background: var(--orange);
+    border-radius: 50%;
+    color: #fff;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-family: var(--display); font-weight: 800;
+    line-height: 1.2;
+  }
+  .circle-inner small { font-weight: 700; font-size: 0.75rem; }
+  .circle-outer .lbl { font-family: var(--display); font-weight: 800; color: var(--orange-deep); line-height: 1.25; }
+  .circle-outer .lbl small { display: block; color: var(--muted); font-family: var(--body); font-weight: 700; font-size: 0.8rem; }
+  .mrow { display: grid; gap: 14px; }
+  .mcard { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .mcard h3 { margin: 0 0 4px; font-family: var(--display); font-size: 1.05rem; }
+  .mcard p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+  .mcard .sum { color: var(--orange-deep); font-weight: 800; font-family: var(--display); font-size: 1.1rem; margin-top: 4px; }
+  .mcard.accent { background: var(--cream); }
+
+  /* ---------- bar charts ---------- */
+  .chart {
+    display: flex;
+    align-items: flex-end;
+    gap: clamp(18px, 5vw, 48px);
+    height: 300px;
+    margin-top: 40px;
+    padding-bottom: 8px;
+  }
+  .bar {
+    flex: 1;
+    max-width: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    text-align: center;
+  }
+  .bar .val { font-family: var(--display); font-weight: 800; font-size: clamp(1.2rem, 3vw, 1.7rem); margin-bottom: 6px; }
+  .bar .col {
+    border-radius: 10px 10px 4px 4px;
+    height: 0%;
+    transition: height 1.1s cubic-bezier(.2,.7,.3,1);
+  }
+  .in .bar .col { height: var(--h); }
+  .bar .cap { margin-top: 10px; font-weight: 800; }
+  .bar .cap small { display: block; font-weight: 600; color: var(--muted); }
+  .col.grey { background: #C9C1B4; }
+  .col.orange { background: var(--orange); }
+  .col.dark { background: #8A8071; }
+  .col.light { background: #FAC57E; }
+  .col.mid { background: #F8AE4E; }
+
+  .econ { margin-top: 34px; }
+  .econ table { min-width: 420px; }
+  .econ td:last-child, .econ th:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+  .econ tr.total td { background: var(--cream); font-weight: 800; color: var(--orange-deep); font-size: 1.05rem; }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  @media (max-width: 860px) { .split { grid-template-columns: 1fr; } }
+
+  /* ---------- GTM phases ---------- */
+  .phases { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-top: 34px; }
+  .phase { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 24px; }
+  .phase .when { font-family: var(--display); font-weight: 800; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange-deep); }
+  .phase h3 { font-family: var(--display); font-weight: 700; font-size: 1.2rem; margin: 6px 0 10px; }
+  .phase ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 0.95rem; display: grid; gap: 6px; }
+
+  /* ---------- use of funds ---------- */
+  .funds { display: grid; gap: 18px; margin-top: 34px; }
+  .fund .toprow { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-weight: 800; }
+  .fund .toprow small { color: var(--muted); font-weight: 700; }
+  .fund .track { height: 16px; background: var(--cream); border-radius: 8px; margin-top: 6px; overflow: hidden; }
+  .fund .fill { height: 100%; width: 0%; border-radius: 8px; background: linear-gradient(90deg, var(--orange), var(--orange-deep)); transition: width 1.1s cubic-bezier(.2,.7,.3,1); }
+  .in .fund .fill { width: var(--w); }
+
+  .cta-row { margin-top: 44px; text-align: center; }
+  .btn {
+    display: inline-block;
+    background: var(--orange);
+    color: #fff;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.1rem;
+    text-decoration: none;
+    padding: 14px 34px;
+    border-radius: 999px;
+    box-shadow: 0 6px 18px rgba(224, 124, 10, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(224, 124, 10, 0.4); }
+
+  /* ---------- closing ---------- */
+  .closing { text-align: center; padding-bottom: 140px; }
+  .closing img.chick { width: min(260px, 55vw); margin: 26px auto 6px; display: block; }
+  .closing .wordmark { font-size: 2rem; }
+  .road {
+    position: relative;
+    height: 150px;
+    overflow: hidden;
+    margin-top: 40px;
+  }
+  .road::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 28px;
+    border-bottom: 4px dashed rgba(35, 26, 18, 0.2);
+  }
+  .rider {
+    position: absolute;
+    bottom: 14px; left: 0;
+    width: 190px;
+    transform: translateX(-120%);
+    animation: ride 10s linear 1s infinite;
+  }
+  .rider img { width: 100%; display: block; }
+  @keyframes ride {
+    0% { transform: translateX(-130%); }
+    100% { transform: translateX(calc(100vw + 40%)); }
+  }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 22px 24px 30px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rv { opacity: 1; transform: none; transition: none; }
+    .bar .col { height: var(--h); transition: none; }
+    .fund .fill { width: var(--w); transition: none; }
+    .rider { animation: none; transform: translateX(8vw); }
+    .scroll-hint::after { animation: none; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="wordmark" href="#top">Jejat<span>.com</span></a>
+    <span class="confidential">Confidential</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="pfill"></div>
+    <img class="progress-chicken" id="pchick" src="/assets/chicken-logo-email.png" alt="">
+  </div>
+</div>
+
+<main id="top">
+
+  <section class="hero wrap">
+    <img class="chick rv" src="/assets/chicken-logo.png" alt="Jejat.com running chicken logo">
+    <p class="eyebrow rv">Investor deck · September 2026</p>
+    <h1 class="rv rv2">Next-day delivery e-commerce for 2M people in Aleppo</h1>
+    <p class="sub rv rv3" style="margin: 0 auto;"><strong>Syria's new souq.com.</strong> Import at factory price, sell 40% below street, deliver next day from our own warehouses.</p>
+    <p class="date rv rv3">Karam Fattal, Founder · <a href="mailto:karam@jejat.com">karam@jejat.com</a></p>
+    <div class="scroll-hint rv rv3" aria-hidden="true"></div>
+  </section>
+
+  <section class="wrap">
+    <p class="eyebrow rv">01 · The founder</p>
+    <h2 class="rv">Built products before. Born in Aleppo.</h2>
+    <div class="founder-grid">
+      <img class="founder-photo rv" src="/assets/founder.jpg" alt="Karam Fattal">
+      <div>
+        <p class="founder-name rv">Karam Fattal</p>
+        <p class="founder-role rv">Ex Nova Sport co-founder · based in Brussels · born in Aleppo</p>
+        <ul class="checks">
+          <li class="rv">7+ years building digital products end-to-end — self-taught full-stack, design and marketing.</li>
+          <li class="rv">Shipped <strong>Nova Sport</strong>: used by 50% of universities in Belgium, 200,000+ users organically, <strong>$650k raised</strong> from business angels.</li>
+          <li class="rv">Ex-Senior Product Manager at Predikt AI · Ex-Marketing Director at MolenGeek.</li>
+          <li class="rv">"100,000 Entrepreneurs" prize, Belgian Education Minister (2022) · Winner, Arizona State University Global Sport Challenge (2024).</li>
+        </ul>
+        <div class="pill rv">Moving to Aleppo <em>in November</em> to run on the ground full-time, all in.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <p class="eyebrow rv">02 · The challenge</p>
+    <h2 class="rv">Syrians pay 4–5× factory price for low-quality goods</h2>
+    <p class="sub rv">Street merchants layer markup on markup, facing a population that survived a war on low incomes.</p>
+    <div class="tablewrap rv">
+      <table>
+        <thead>
+          <tr><th>Product</th><th>Factory price</th><th>Aleppo street price</th><th>Markup</th></tr>
+        </thead>
+        <tbody class="mono">
+          <tr><td>Electric kettle</td><td>$6.00</td><td>$28</td><td><span class="markup">4.7×</span></td></tr>
+          <tr><td>Kids' sneakers</td><td>$4.00</td><td>$19</td><td><span class="markup">4.8×</span></td></tr>
+          <tr><td>Phone charger</td><td>$1.50</td><td>$8</td><td><span class="markup">5.3×</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="stat-aside rv">
+      <span class="huge">4–5×</span>
+      <span class="label">what consumers overpay, layer by layer</span>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <p class="eyebrow rv">03 · The opportunity</p>
+    <h2 class="rv">Syria is reopening and e-commerce's seat is still empty</h2>
+    <div class="cards c3">
+      <div class="card rv">
+        <div class="big">2025</div>
+        <h3>Sanctions lifted</h3>
+        <p>US &amp; EU restrictions dismantled in 2025; Caesar Act repealed Dec 2025. Banking, imports and payments are reconnecting.</p>
+      </div>
+      <div class="card rv rv2">
+        <div class="big" data-count="3.2" data-suffix="M" data-decimals="1">3.2M</div>
+        <h3>People coming home</h3>
+        <p>1.5M refugees + 1.7M displaced Syrians returned since Dec 2024. Inflation down from 72% to ~12%. Returning families = new households to equip.</p>
+      </div>
+      <div class="card rv rv3">
+        <div class="big">0</div>
+        <h3>Modern competitors</h3>
+        <p>No Amazon, no souq.com, no local player at scale. First mover builds the trust and logistics moat — the souq.com playbook, one market left.</p>
+      </div>
+    </div>
+    <p class="note rv">Sources: World Bank, UNHCR, US Congress — 2025–2026.</p>
+    <div class="strip rv">Import at factory price · Sell quality products 40% below street price · Free next-day delivery · 2–3× margin</div>
+  </section>
+
+  <section class="wrap">
+    <p class="eyebrow rv">04 · Unfair advantages</p>
+    <h2 class="rv">Zero rent. Zero dev cost.</h2>
+    <div class="cards c2">
+      <div class="card rv">
+        <div class="big" data-count="45000" data-suffix=" m²">45,000 m²</div>
+        <h3>10 family warehouses, 15 min from Aleppo center</h3>
+        <p>Family-owned warehouses and land at the edge of the city: storage, sorting and fleet parking at $0 rent. Warehousing is the #1 fixed cost of inventory e-commerce — ours is zero, and next-day delivery starts 15 minutes from our customers.</p>
+        <p class="foot">What competitors pay: a yearly lease on every m².</p>
+      </div>
+      <div class="card rv rv2">
+        <div class="big">$0</div>
+        <h3>Tech built entirely in-house</h3>
+        <p>The full platform is designed and coded by the founder. Competitors pay an agency $100k or more and wait 6–12 months for a first version, then pay again for every change. We ship improvements the same day, at no cost.</p>
+        <p class="foot">What competitors pay: $100k+ and 6–12 months.</p>
+      </div>
+    </div>
+    <div class="strip rv">Zero rent + zero dev cost: investor capital goes to stock and delivery, not overhead.</div>
+  </section>
+
+  <section class="wrap">
+    <p class="eyebrow rv">05 · The competition</p>
+    <h2 class="rv">The seat isn't empty because nobody noticed</h2>
+    <div class="tablewrap rv">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Street<br>merchants</th>
+            <th>Social sellers<br>&amp; forwarders</th>
+            <th>Classifieds<br>(OpenSooq)</th>
+            <th>Amazon<br>noon / Temu</th>
+            <th class="jejat">Jejat.com</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>New goods at fair prices</strong></td>
+            <td class="no">✗ <small>4–5× markup</small></td>
+            <td class="mid">~ <small>random stock, prepay risk</small></td>
+            <td class="no">✗ <small>mostly used goods</small></td>
+            <td class="no">✗ <small>not in Syria</small></td>
+            <td class="yes jejat">✓ <small>40% below street</small></td>
+          </tr>
+          <tr>
+            <td><strong>Own stock &amp; quality control</strong></td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="yes jejat">✓</td>
+          </tr>
+          <tr>
+            <td><strong>Delivery</strong></td>
+            <td class="no">✗ <small>in-store only</small></td>
+            <td class="mid">~ <small>2–6 weeks</small></td>
+            <td class="no">✗ <small>none</small></td>
+            <td class="no">✗ <small>noon rejects Syrian addresses (2026)</small></td>
+            <td class="yes jejat">✓ <small>next day, free</small></td>
+          </tr>
+          <tr>
+            <td><strong>Returns &amp; guarantee</strong></td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="yes jejat">✓</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note rv">noon delivery status: community-verified, 2026. OpenSooq: peer-to-peer listings, no fulfillment.</p>
+    <div class="strip rv">Winning takes local logistics, local trust and capital on the ground. That is exactly what we are building.</div>
+  </section>
+
+  <section class="wrap">
+    <p class="eyebrow rv">06 · The product</p>
+    <h2 class="rv">Not just a shop: the full delivery machine</h2>
+    <div class="cards c3">
+      <div class="card rv">
+        <div class="mock">
+          <div class="phone">
+            <div class="bar">Jejat.com</div>
+            <div class="grid"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="cta">Order now</div>
+          </div>
+        </div>
+        <h3>1. Customer app &amp; website</h3>
+        <p>Browse and order in Arabic · Cash on delivery + e-payment · Live order tracking.</p>
+      </div>
+      <div class="card rv rv2">
+        <div class="mock">
+          <div class="phone">
+            <div class="map">
+              <svg viewBox="0 0 100 160" aria-hidden="true">
+                <path d="M78 18 L78 52 L44 52 L44 96 L20 96 L20 138" fill="none" stroke="#F7941D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="78" cy="18" r="7" fill="#E07C0A"/>
+                <circle cx="20" cy="138" r="7" fill="#231A12"/>
+              </svg>
+            </div>
+            <div class="eta">Next stop: 4 min</div>
+          </div>
+        </div>
+        <h3>2. Driver app</h3>
+        <p>Pickup &amp; drop-off assignments · Optimized delivery routes · Proof of delivery, cash log.</p>
+      </div>
+      <div class="card rv rv3">
+        <div class="mock">
+          <div class="screen">
+            <div class="bar">Stock: Warehouse 3</div>
+            <div class="rows">
+              <i><b>132</b></i><i><b>167</b></i><i><b>64</b></i><i><b>381</b></i><i><b>214</b></i>
+            </div>
+          </div>
+        </div>
+        <h3>3. Warehouse OS</h3>
+        <p>Live stock across 10 warehouses · Barcode scanning in &amp; out · Low-stock and reorder alerts.</p>
+      </div>
+    </div>
+    <div class="strip rv">All three systems built in-house by the founder: one codebase, zero license fees, improvements shipped the same day.</div>
+  </section>
+
+  <section class="wrap">
+    <p class="eyebrow rv">07 · The market size</p>
+    <h2 class="rv">Win Aleppo first. Then all of Syria.</h2>
+    <div class="market-grid">
+      <div class="circles rv">
+        <div class="circle-outer">
+          <div class="lbl">SYRIA<small>5M homes · 26M people</small></div>
+        </div>
+        <div class="circle-inner">ALEPPO<small>400k homes</small></div>
+      </div>
+      <div class="mrow">
+        <div class="mcard rv">
+          <h3>Aleppo: the launch market</h3>
+          <p>5% of 400,000 households = 20,000 homes × $12 / month on our categories</p>
+          <div class="sum">= $2.9M / year</div>
+        </div>
+        <div class="mcard rv rv2">
+          <h3>Syria: the goal</h3>
+          <p>5% of 5M households = 250,000 homes — same playbook, city by city</p>
+          <div class="sum">= $36M / year</div>
+        </div>
+        <div class="mcard accent rv rv3">
+          <h3>Why 5% is reachable</h3>
+          <p>No modern competitor, prices 40% below street, free next-day delivery.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <p class="eyebrow rv">08 · Business model</p>
+    <h2 class="rv">Cheaper than the street. 60% gross margin.</h2>
+    <div class="split">
+      <div>
+        <div class="chart rv" data-bars>
+          <div class="bar">
+            <div class="val">$20</div>
+            <div class="col grey" style="--h: 100%"></div>
+            <div class="cap">Street price<small>same product</small></div>
+          </div>
+          <div class="bar">
+            <div class="val">$12</div>
+            <div class="col orange" style="--h: 60%"></div>
+            <div class="cap">Jejat price<small>40% cheaper</small></div>
+          </div>
+          <div class="bar">
+            <div class="val">$4.8</div>
+            <div class="col dark" style="--h: 24%"></div>
+            <div class="cap">Our cost<small>factory, landed</small></div>
+          </div>
+        </div>
+        <p class="note rv">$7.20 gross margin per order (60%).</p>
+      </div>
+      <div class="econ rv">
+        <div class="tablewrap" style="margin-top: 0;">
+          <table>
+            <thead><tr><th>One average order</th><th>$12.00</th></tr></thead>
+            <tbody class="mono">
+              <tr><td>Goods (factory + shipping + customs)</td><td>−$4.80</td></tr>
+              <tr><td>Delivery (own driver, dense city)</td><td>−$0.50</td></tr>
+              <tr><td>Packaging + payment handling</td><td>−$0.30</td></tr>
+              <tr class="total"><td>Contribution per order</td><td>$6.40 (53%)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Rent: $0 (own warehouses) · Tech: $0 (built in-house) · Fixed costs = small local team + marketing · <strong>Breakeven: under 35 orders / day in Aleppo.</strong></p>
+      </div>
+    </div>
+    <div class="strip rv">The middlemen's markup becomes our margin: every order contributes from day one, with zero rent and zero license fees underneath.</div>
+  </section>
+
+  <section class="wrap">
+    <p class="eyebrow rv">09 · Go-to-market</p>
+    <h2 class="rv">Every delivered box is an ad</h2>
+    <div class="phases">
+      <div class="phase rv">
+        <div class="when">Months 1–3</div>
+        <h3>Launch loud</h3>
+        <ul>
+          <li>±300 best-selling products live</li>
+          <li>Facebook, Instagram &amp; TikTok ads</li>
+          <li>Aleppo influencers unbox Jejat</li>
+        </ul>
+      </div>
+      <div class="phase rv rv2">
+        <div class="when">Months 4–12</div>
+        <h3>Turn buyers into sellers</h3>
+        <ul>
+          <li>Referral credits for both sides</li>
+          <li>Branded bikes = moving billboards</li>
+          <li>WhatsApp reorder in one tap</li>
+        </ul>
+      </div>
+      <div class="phase rv rv3">
+        <div class="when">Year 2+</div>
+        <h3>Repeat the playbook</h3>
+        <ul>
+          <li>Damascus, Homs, Hama, Lattakia</li>
+          <li>Same platform, local warehouses</li>
+          <li>National brand, city logistics</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cards c2">
+      <div class="card accent rv">
+        <h3>Winning trust in a burned market</h3>
+        <p>Cash on delivery: pay when you hold it · Free returns, no questions · Real warehouse, real brand, real drivers · A story people remember: the farm that became e-commerce.</p>
+      </div>
+      <div class="card rv rv2">
+        <h3>Why acquisition is cheap here</h3>
+        <p>Syrian social ad space: low competition, low CPM · One dense city: every ad dollar lands nearby · Referrals ride word of mouth, not ad budgets · Target CAC under $2, paid back on order #1.</p>
+      </div>
+    </div>
+    <div class="strip rv">The brand on the doorstep, the price told to the neighbors, the referral code inside.</div>
+  </section>
+
+  <section class="wrap">
+    <p class="eyebrow rv">10 · Revenue projection</p>
+    <h2 class="rv">Aleppo alone reaches $2.9M / year</h2>
+    <div class="split">
+      <div>
+        <div class="chart rv" data-bars>
+          <div class="bar">
+            <div class="val">$340k</div>
+            <div class="col light" style="--h: 14%"></div>
+            <div class="cap">Year 1<small>4,500 households</small></div>
+          </div>
+          <div class="bar">
+            <div class="val">$1.2M</div>
+            <div class="col mid" style="--h: 44%"></div>
+            <div class="cap">Year 2<small>8,000 households</small></div>
+          </div>
+          <div class="bar">
+            <div class="val">$2.9M</div>
+            <div class="col orange" style="--h: 96%"></div>
+            <div class="cap">Year 3<small>20,000 households = 5%</small></div>
+          </div>
+        </div>
+      </div>
+      <div class="mrow" style="align-self: center;">
+        <div class="mcard rv">
+          <h3>Month 6–8 · Breakeven pace</h3>
+          <p>35+ orders / day covers all fixed costs.</p>
+        </div>
+        <div class="mcard rv rv2">
+          <h3>Year 2 · Aleppo profitable</h3>
+          <p>Contribution funds inventory growth and the referral flywheel.</p>
+        </div>
+        <div class="mcard accent rv rv3">
+          <h3>Year 3 · Damascus launch</h3>
+          <p>Same platform, new warehouse: the Syria expansion begins.</p>
+        </div>
+      </div>
+    </div>
+    <div class="strip rv">Conservative by design: the curve stops at the 5% we claimed, one order per home per month — Syria expansion is upside on top.</div>
+  </section>
+
+  <section class="wrap">
+    <p class="eyebrow rv">11 · The pre-seed</p>
+    <h2 class="rv">Raising $500k to launch Aleppo</h2>
+    <div class="split">
+      <div>
+        <div class="funds rv" data-bars>
+          <div class="fund">
+            <div class="toprow"><span>Inventory: first containers of stock</span><span>$225k <small>(45%)</small></span></div>
+            <div class="track"><div class="fill" style="--w: 90%"></div></div>
+          </div>
+          <div class="fund">
+            <div class="toprow"><span>Fleet &amp; drivers: 5 vehicles, D+1 routes</span><span>$75k <small>(15%)</small></span></div>
+            <div class="track"><div class="fill" style="--w: 30%"></div></div>
+          </div>
+          <div class="fund">
+            <div class="toprow"><span>Team: warehouse &amp; customer service</span><span>$75k <small>(15%)</small></span></div>
+            <div class="track"><div class="fill" style="--w: 30%"></div></div>
+          </div>
+          <div class="fund">
+            <div class="toprow"><span>Marketing &amp; launch</span><span>$75k <small>(15%)</small></span></div>
+            <div class="track"><div class="fill" style="--w: 30%"></div></div>
+          </div>
+          <div class="fund">
+            <div class="toprow"><span>Reserve</span><span>$50k <small>(10%)</small></span></div>
+            <div class="track"><div class="fill" style="--w: 20%"></div></div>
+          </div>
+        </div>
+        <p class="note rv"><strong>18+ months of runway, past the breakeven point.</strong></p>
+      </div>
+      <div class="mrow" style="align-self: center;">
+        <div class="mcard rv">
+          <h3>Launch</h3>
+          <p>1,000 products live, Aleppo-wide next-day delivery.</p>
+        </div>
+        <div class="mcard rv">
+          <h3>Month 6–8</h3>
+          <p>Breakeven pace: 35+ orders / day.</p>
+        </div>
+        <div class="mcard rv rv2">
+          <h3>Month 12</h3>
+          <p>4,500 households, $340k revenue run rate.</p>
+        </div>
+        <div class="mcard accent rv rv3">
+          <h3>Month 24</h3>
+          <p>Aleppo profitable, Damascus ready.</p>
+        </div>
+      </div>
+    </div>
+    <div class="strip rv">No rent. No software costs. Every dollar goes to stock, wheels and customers.</div>
+    <div class="cta-row rv">
+      <a class="btn" href="mailto:karam@jejat.com?subject=Jejat.com%20pre-seed">Talk to the founder</a>
+    </div>
+  </section>
+
+  <section class="closing wrap">
+    <p class="eyebrow rv">The story</p>
+    <h2 class="rv">The chicken farm that became e-commerce</h2>
+    <img class="chick rv" src="/assets/chicken-logo.png" alt="">
+    <div class="wordmark rv">Jejat<span>.com</span></div>
+    <p class="sub rv" style="margin: 14px auto 0;">Karam Fattal · <a href="mailto:karam@jejat.com">karam@jejat.com</a></p>
+    <div class="road" aria-hidden="true">
+      <div class="rider"><img src="/assets/delivery-guy.png" alt=""></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Jejat.com — Confidential. Shared for investment discussion purposes only. September 2026.
+</footer>
+
+<script>
+  (function () {
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // scroll progress + running chicken
+    var fill = document.getElementById("pfill");
+    var chick = document.getElementById("pchick");
+    function onScroll() {
+      var doc = document.documentElement;
+      var max = doc.scrollHeight - doc.clientHeight;
+      var p = max > 0 ? (doc.scrollTop || document.body.scrollTop) / max : 0;
+      var pct = (p * 100).toFixed(2) + "%";
+      fill.style.width = pct;
+      chick.style.left = pct;
+    }
+    document.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    // reveals
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add("in");
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.18 });
+    document.querySelectorAll(".rv, [data-bars]").forEach(function (el) { io.observe(el); });
+  })();
+</script>
