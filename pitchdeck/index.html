@@ -631,8 +631,8 @@
         </div>
       </div>
       <div class="mult">
-        <div class="x"><span id="pmMult">5.4</span>×</div>
-        <div class="lbl">what consumers overpay before Jejat</div>
+        <div class="x">+$<span id="pmGap">61</span></div>
+        <div class="lbl">the gap between factory and street price</div>
       </div>
     </div>
   </div>
@@ -1142,12 +1142,12 @@
 
   /* ---------- challenge: price machine ---------- */
   var products = [
-    { f: 14, s: 75, m: "5.4", fl: "$14", sl: "$75" },
-    { f: 4, s: 19, m: "4.8", fl: "$4.00", sl: "$19" },
-    { f: 1.5, s: 8, m: "5.3", fl: "$1.50", sl: "$8" }
+    { f: 14, s: 75, gl: "61", fl: "$14", sl: "$75" },
+    { f: 4, s: 19, gl: "15", fl: "$4.00", sl: "$19" },
+    { f: 1.5, s: 8, gl: "6.50", fl: "$1.50", sl: "$8" }
   ];
   var fBar = $("#pmFactoryBar"), sBar = $("#pmStreetBar"),
-      fAmt = $("#pmFactory"), sAmt = $("#pmStreet"), mEl = $("#pmMult");
+      fAmt = $("#pmFactory"), sAmt = $("#pmStreet"), mEl = $("#pmGap");
   function setProduct(i, animateMult) {
     var p = products[i];
     var fh = (p.f / p.s) * 100;
@@ -1156,16 +1156,16 @@
     fAmt.textContent = p.fl;
     sAmt.textContent = p.sl;
     if (animateMult && !reduced) {
-      var t0 = null, target = parseFloat(p.m);
+      var t0 = null, target = p.s - p.f;
+      var dec = p.gl.indexOf(".") > -1 ? 2 : 0;
       (function step(t) {
         if (!t0) t0 = t;
         var pr = Math.min(1, (t - t0) / 900);
         var e = 1 - Math.pow(1 - pr, 3);
-        mEl.textContent = (1 + (target - 1) * e).toFixed(1);
-        if (pr < 1) requestAnimationFrame(step); else mEl.textContent = p.m;
+        mEl.textContent = (target * e).toFixed(dec);
+        if (pr < 1) requestAnimationFrame(step); else mEl.textContent = p.gl;
       })(performance.now());
-      requestAnimationFrame(function () {});
-    } else mEl.textContent = p.m;
+    } else mEl.textContent = p.gl;
     $$("#ptabs .ptab").forEach(function (b, bi) { b.classList.toggle("active", bi === i); });
   }
   $$("#ptabs .ptab").forEach(function (b) {
