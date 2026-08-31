@@ -58,7 +58,7 @@
     position: absolute; inset: 0 auto 0 0; width: 0%;
     background: linear-gradient(90deg, var(--orange), var(--orange-deep));
   }
-  .progress-chicken { position: absolute; left: 0%; bottom: -4px; width: 36px; margin-left: -18px; }
+  .progress-chicken { position: absolute; left: 20px; bottom: -3px; width: 36px; margin-left: -18px; transition: left 0.1s linear; }
 
   /* ============ side dots ============ */
   .dots {
@@ -153,12 +153,11 @@
   .hl {
     white-space: nowrap;
     color: var(--orange-deep);
-    background-color: transparent;
-    border-radius: 0.14em;
     padding: 0 0.1em;
-    transition: background-color 0.7s ease 1s;
+    background: linear-gradient(rgba(247, 148, 29, 0.18), rgba(247, 148, 29, 0.18)) no-repeat center / 0% 58%;
+    transition: background-size 0.7s cubic-bezier(.2,.7,.3,1) 1s;
   }
-  .sw.in .hl { background-color: rgba(247, 148, 29, 0.16); }
+  .sw.in .hl { background-size: 100% 58%; }
   .scroll-cue {
     margin: 40px auto 0; width: 26px; height: 42px;
     border: 2.5px solid var(--muted); border-radius: 14px; position: relative; opacity: 0.7;
@@ -1079,7 +1078,8 @@
     var p = max > 0 ? (d.scrollTop || document.body.scrollTop) / max : 0;
     var pct = (p * 100).toFixed(2) + "%";
     pfill.style.width = pct;
-    pchick.style.left = pct;
+    var tw = pfill.parentElement.clientWidth;
+    pchick.style.left = Math.min(Math.max(p * tw, 20), tw - 20) + "px";
   }
   document.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
