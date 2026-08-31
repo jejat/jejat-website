@@ -221,10 +221,36 @@
   /* ============ challenge (interactive price machine) ============ */
   .price-machine {
     margin-top: 40px;
-    display: grid; grid-template-columns: minmax(300px, 1fr) minmax(260px, 0.8fr);
-    gap: 48px; align-items: end;
+    display: grid; grid-template-columns: minmax(280px, 1fr) minmax(200px, 0.7fr) minmax(150px, 0.5fr);
+    gap: clamp(24px, 4vw, 44px); align-items: end;
   }
   @media (max-width: 860px) { .price-machine { grid-template-columns: 1fr; } }
+
+  /* receipt: the real Instagram quote behind the street price */
+  .pproof { text-align: center; }
+  .pproof[hidden] { display: none; }
+  .pproof .shot {
+    position: relative; display: block; margin: 0 auto;
+    width: 100%; max-width: 168px;
+    border-radius: 14px; overflow: hidden;
+    border: 6px solid var(--ink); background: var(--ink);
+    box-shadow: 0 14px 30px rgba(35,26,18,0.22);
+    transform: rotate(-1.6deg);
+  }
+  .pproof .shot img { display: block; width: 100%; }
+  .pproof .tag {
+    position: absolute; right: -10px; bottom: 16%;
+    background: var(--red); color: #fff;
+    font-family: var(--display); font-weight: 800; font-size: 0.95rem;
+    padding: 4px 10px; border-radius: 8px;
+    transform: rotate(3deg);
+    box-shadow: 0 6px 14px rgba(206,32,41,0.35);
+  }
+  .pproof .cap {
+    margin-top: 14px; font-weight: 700; font-size: 0.82rem; color: var(--muted);
+    line-height: 1.45;
+  }
+  .pproof .cap strong { color: var(--ink); display: block; }
   .ptabs { display: flex; gap: 10px; flex-wrap: wrap; margin: 30px 0; }
   .ptab .ic { margin-right: 6px; }
   .ptab {
@@ -618,12 +644,12 @@
     <div class="price-machine rv d2" id="priceMachine">
       <div class="pchart">
         <div class="pcol factory">
-          <div class="amount" id="pmFactory">$14</div>
-          <div class="bar" id="pmFactoryBar" style="height: 19%"></div>
+          <div class="amount" id="pmFactory">$49</div>
+          <div class="bar" id="pmFactoryBar" style="height: 24.5%"></div>
           <div class="cap">Factory price<small>what it really costs</small></div>
         </div>
         <div class="pcol street">
-          <div class="amount" id="pmStreet">$75</div>
+          <div class="amount" id="pmStreet">$200</div>
           <div class="bar" id="pmStreetBar" style="height: 100%">
             <div class="layers"><i></i><i></i><i></i><i></i></div>
           </div>
@@ -631,8 +657,15 @@
         </div>
       </div>
       <div class="mult">
-        <div class="x">+$<span id="pmGap">61</span></div>
+        <div class="x">+$<span id="pmGap">151</span></div>
         <div class="lbl">the gap between factory and street price</div>
+      </div>
+      <div class="pproof" id="pmProof">
+        <span class="shot">
+          <img src="/assets/aleppo-stroller-price.png" alt="Instagram chat with an Aleppo baby store quoting $200 for a stroller">
+          <span class="tag">$200</span>
+        </span>
+        <p class="cap"><strong>Not an estimate.</strong>We asked an Aleppo baby store on Instagram. They quoted $200.</p>
       </div>
     </div>
   </div>
@@ -1137,12 +1170,13 @@
 
   /* ---------- challenge: price machine ---------- */
   var products = [
-    { f: 14, s: 75, gl: "61", fl: "$14", sl: "$75" },
+    { f: 49, s: 200, gl: "151", fl: "$49", sl: "$200" },
     { f: 4, s: 19, gl: "15", fl: "$4.00", sl: "$19" },
     { f: 1.5, s: 8, gl: "6.50", fl: "$1.50", sl: "$8" }
   ];
   var fBar = $("#pmFactoryBar"), sBar = $("#pmStreetBar"),
-      fAmt = $("#pmFactory"), sAmt = $("#pmStreet"), mEl = $("#pmGap");
+      fAmt = $("#pmFactory"), sAmt = $("#pmStreet"), mEl = $("#pmGap"),
+      proofEl = $("#pmProof");
   function setProduct(i, animateMult) {
     var p = products[i];
     var fh = (p.f / p.s) * 100;
@@ -1161,6 +1195,8 @@
         if (pr < 1) requestAnimationFrame(step); else mEl.textContent = p.gl;
       })(performance.now());
     } else mEl.textContent = p.gl;
+    // only the stroller has a screenshot behind its street price
+    if (proofEl) proofEl.hidden = (i !== 0);
     $$("#ptabs .ptab").forEach(function (b, bi) { b.classList.toggle("active", bi === i); });
   }
   $$("#ptabs .ptab").forEach(function (b) {
