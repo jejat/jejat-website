@@ -917,27 +917,27 @@
   <div class="watermark">08</div>
   <div class="wrap">
     <p class="eyebrow rv">08 · Business model</p>
-    <h2 class="sw" data-split>Cheaper than the street. 60% gross margin.</h2>
+    <h2 class="sw" data-split>Cheaper than the street. 53% gross margin.</h2>
     <div class="split">
       <div>
         <div class="chart rv-io">
-          <div class="cbar"><div class="val">$25</div><div class="col grey" style="--h:100%"></div><div class="cap">Street price<small>same product</small></div></div>
-          <div class="cbar"><div class="val">$15</div><div class="col orangec" style="--h:60%"></div><div class="cap">Jejat price<small>40% cheaper</small></div></div>
-          <div class="cbar"><div class="val">$6</div><div class="col dark" style="--h:24%"></div><div class="cap">Our cost<small>factory, landed</small></div></div>
+          <div class="cbar"><div class="val">$200</div><div class="col grey" style="--h:100%"></div><div class="cap">Street price<small>Aleppo baby store quote</small></div></div>
+          <div class="cbar"><div class="val">$120</div><div class="col orangec" style="--h:60%"></div><div class="cap">Jejat price<small>40% cheaper</small></div></div>
+          <div class="cbar"><div class="val">$56</div><div class="col dark" style="--h:28%"></div><div class="cap">Our cost<small>$38 factory, landed in Aleppo</small></div></div>
         </div>
-        <p class="note rv">$9.00 gross margin per order (60%).</p>
+        <p class="note rv">$64 gross margin per stroller (53%).</p>
       </div>
       <div class="rv-io" id="receiptWrap">
         <div class="receipt" id="receipt">
           <h4>Jejat.com</h4>
-          <div class="rsub">one average order · Aleppo</div>
-          <div class="rline" style="--i:0"><span>Order total</span><span><strong>$15.00</strong></span></div>
-          <div class="rline" style="--i:1"><span>Goods (factory + shipping + customs)</span><span class="neg">−$6.00</span></div>
-          <div class="rline" style="--i:2"><span>Delivery (own driver, dense city)</span><span class="neg">−$0.50</span></div>
-          <div class="rline" style="--i:3"><span>Packaging + payment handling</span><span class="neg">−$0.30</span></div>
-          <div class="rline total" style="--i:4"><span>Contribution per order</span><span>$<span id="rTotal">15.00</span> <small id="rPct"></small></span></div>
+          <div class="rsub">one baby stroller · Aleppo</div>
+          <div class="rline" style="--i:0"><span>Order total</span><span><strong>$120.00</strong></span></div>
+          <div class="rline" style="--i:1"><span>Goods (factory + shipping + customs)</span><span class="neg">−$56.00</span></div>
+          <div class="rline" style="--i:2"><span>Delivery (own driver, bulky item)</span><span class="neg">−$3.00</span></div>
+          <div class="rline" style="--i:3"><span>Packaging + payment handling</span><span class="neg">−$4.00</span></div>
+          <div class="rline total" style="--i:4"><span>Contribution per order</span><span>$<span id="rTotal">120.00</span> <small id="rPct"></small></span></div>
         </div>
-        <p class="note" style="text-align:center;">Rent: $0 (own warehouses) · Tech: $0 (built in-house) · <strong>Breakeven: about 50 orders / day in Aleppo.</strong></p>
+        <p class="note" style="text-align:center;">Rent: $0 (own warehouses) · Tech: $0 (built in-house) · <strong>Breakeven: about 50 orders / day in Aleppo at our $15 average.</strong></p>
       </div>
     </div>
     <div class="strip rv">The middlemen's markup becomes our margin: every order contributes from day one, with zero rent and zero license fees underneath.</div>
@@ -1398,7 +1398,7 @@
 
   /* ---------- receipt printing ---------- */
   var receipt = $("#receipt"), rTotal = $("#rTotal"), rPct = $("#rPct");
-  var rSteps = [15.00, 9.00, 8.50, 8.20];
+  var rSteps = [120.00, 64.00, 61.00, 57.00];
   var rIO = new IntersectionObserver(function (es) {
     es.forEach(function (e) {
       if (e.isIntersecting) {
@@ -1407,10 +1407,10 @@
           rSteps.forEach(function (v, idx) {
             setTimeout(function () {
               rTotal.textContent = v.toFixed(2);
-              if (idx === rSteps.length - 1) rPct.textContent = "(55%)";
+              if (idx === rSteps.length - 1) rPct.textContent = "(48%)";
             }, 550 * (idx + 1) + 250);
           });
-        } else { rTotal.textContent = "8.20"; rPct.textContent = "(55%)"; }
+        } else { rTotal.textContent = "57.00"; rPct.textContent = "(48%)"; }
         rIO.unobserve(e.target);
       }
     });
