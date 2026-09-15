@@ -592,8 +592,6 @@
   .chain.jejat .link { transition-delay: calc(var(--i) * 300ms + 140ms); }
   .chains.in .chain.street .node, .chains.in .chain.street .tag { opacity: 1; transform: none; }
   .chains.in .chain.street .link { transform: scaleX(1); }
-  .chain-cut { position: absolute; left: 17%; width: 71%; top: 30px; height: 5px; background: var(--orange); border-radius: 3px; transform: rotate(-2.5deg) scaleX(0); transform-origin: left center; transition: transform 0.55s cubic-bezier(.2,.7,.3,1); z-index: 2; }
-  .chains.cut .chain-cut { transform: rotate(-2.5deg) scaleX(1); }
   .chains.cut .chain.street .node.mid { filter: grayscale(1); opacity: 0.35; transition-delay: 150ms; }
   .chains.cut .chain.street .link { opacity: 0.4; transition-delay: 150ms; }
   .chains.go .chain.jejat .node, .chains.go .chain.jejat .tag { opacity: 1; transform: none; }
@@ -763,7 +761,6 @@
           <div class="node mid" style="--i:4"><span class="ic">🧑‍🔧</span><b>Merchant</b><small class="tag">+markup</small></div>
           <div class="link" style="--i:4"></div>
           <div class="node" style="--i:5"><span class="ic">🏠</span><b>Her door</b><small>weeks later</small></div>
-          <div class="chain-cut"></div>
         </div></div>
       </div>
       <div class="chain jejat">
