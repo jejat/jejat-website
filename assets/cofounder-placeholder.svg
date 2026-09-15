@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="400" height="500">
+  <rect width="400" height="500" fill="#EFE7D8"/>
+  <circle cx="200" cy="190" r="80" fill="#C9C1B4"/>
+  <path d="M60 470c0-90 62-150 140-150s140 60 140 150" fill="#C9C1B4"/>
+  <text x="200" y="215" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="64" font-weight="700" fill="#FFFDF8">AS</text>
+</svg>
