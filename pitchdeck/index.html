@@ -570,6 +570,43 @@
 
   footer { border-top: 1px solid var(--line); padding: 22px 24px 30px; text-align: center; color: var(--muted); font-size: 0.85rem; }
 
+  /* ============ solution: two chains ============ */
+  .chains { margin-top: 34px; display: grid; gap: 20px; }
+  .chain { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 22px 20px; }
+  .chain.jejat { background: var(--cream); padding-bottom: 64px; }
+  .chain-title { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px 14px; font-family: var(--display); font-weight: 800; font-size: 1.02rem; margin-bottom: 14px; }
+  .chain-title .price { font-size: 1.55rem; font-variant-numeric: tabular-nums; color: var(--red); white-space: nowrap; }
+  .chain.jejat .chain-title .price { color: var(--orange-deep); }
+  .chain-title .price small { font-size: 0.82rem; font-weight: 700; color: var(--muted); margin-left: 8px; }
+  .chain-scroll { overflow-x: auto; }
+  .chain-row { display: flex; align-items: flex-start; min-width: 620px; position: relative; padding: 2px 0; }
+  .node { flex: 0 0 108px; text-align: center; opacity: 0; transform: translateY(10px) scale(0.85); transition: opacity 0.45s ease, transform 0.45s cubic-bezier(.2,.8,.3,1.3), filter 0.6s ease; transition-delay: calc(var(--i) * 320ms); }
+  .node .ic { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; margin: 0 auto 8px; border-radius: 50%; background: #fff; border: 2px solid var(--line); font-size: 1.5rem; }
+  .chain.jejat .node .ic { border-color: var(--orange); box-shadow: 0 6px 16px rgba(247,148,29,0.22); }
+  .node b { display: block; font-family: var(--display); font-weight: 800; font-size: 0.9rem; line-height: 1.2; white-space: nowrap; }
+  .node small { display: block; color: var(--muted); font-weight: 600; font-size: 0.76rem; line-height: 1.25; margin-top: 2px; }
+  .node .tag { color: var(--red); font-weight: 800; font-family: var(--display); opacity: 0; transform: scale(2) rotate(-10deg); transition: opacity 0.35s, transform 0.35s cubic-bezier(.2,.8,.3,1.3); transition-delay: calc(var(--i) * 320ms + 220ms); }
+  .link { flex: 1; height: 4px; margin-top: 26px; background: #D9CFBC; border-radius: 2px; transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease, opacity 0.5s ease; transition-delay: calc(var(--i) * 320ms + 140ms); }
+  .chain.jejat .link { height: 6px; margin-top: 25px; background: linear-gradient(90deg, var(--orange), var(--orange-deep)); }
+  .chain.jejat .node, .chain.jejat .tag { transition-delay: calc(var(--i) * 300ms); }
+  .chain.jejat .link { transition-delay: calc(var(--i) * 300ms + 140ms); }
+  .chains.in .chain.street .node, .chains.in .chain.street .tag { opacity: 1; transform: none; }
+  .chains.in .chain.street .link { transform: scaleX(1); }
+  .chain-cut { position: absolute; left: 17%; width: 71%; top: 30px; height: 5px; background: var(--orange); border-radius: 3px; transform: rotate(-2.5deg) scaleX(0); transform-origin: left center; transition: transform 0.55s cubic-bezier(.2,.7,.3,1); z-index: 2; }
+  .chains.cut .chain-cut { transform: rotate(-2.5deg) scaleX(1); }
+  .chains.cut .chain.street .node.mid { filter: grayscale(1); opacity: 0.35; transition-delay: 150ms; }
+  .chains.cut .chain.street .link { opacity: 0.4; transition-delay: 150ms; }
+  .chains.go .chain.jejat .node, .chains.go .chain.jejat .tag { opacity: 1; transform: none; }
+  .chains.go .chain.jejat .link { transform: scaleX(1); }
+  .ride-lane { position: absolute; left: 22px; right: 22px; bottom: 24px; border-top: 3px dashed rgba(224,124,10,0.35); }
+  .chain-rider { position: absolute; bottom: 14px; left: 3%; width: 84px; transform: translateX(-50%); opacity: 0; transition: left 2.4s cubic-bezier(.4,0,.2,1) 200ms, opacity 0.3s ease; }
+  .chains.go .chain-rider { left: 93%; opacity: 1; }
+  .cats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .cat { display: inline-flex; align-items: center; gap: 7px; background: #fff; border: 2px solid var(--line); border-radius: 999px; padding: 6px 12px 6px 10px; font-family: var(--display); font-weight: 700; font-size: 0.9rem; }
+  .cat b { background: var(--orange); color: #fff; border-radius: 999px; padding: 1px 9px; font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+  .cat b::after { content: ""; }
+  @media (max-width: 740px) { .node { flex-basis: 92px; } }
+
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { animation-duration: 0.001s !important; animation-delay: 0s !important; transition-duration: 0.001s !important; }
@@ -578,6 +615,9 @@
     .cbar .val { bottom: calc(var(--h) + 6px) !important; }
     .fund .fill { width: var(--w) !important; }
     .rider, .gtm-rider { animation: none; }
+    .chains .node, .chains .tag { opacity: 1 !important; transform: none !important; }
+    .chains .link { transform: none !important; }
+    .chain-rider { left: 93% !important; opacity: 1 !important; }
     .zoomline, .scroll-cue { display: none; }
   }
 </style>
@@ -700,11 +740,76 @@
   </div>
 </section>
 
-<!-- ================= OPPORTUNITY ================= -->
-<section id="s-opportunity" data-label="Opportunity">
+<!-- ================= SOLUTION ================= -->
+<section id="s-solution" data-label="Solution">
   <div class="watermark">04</div>
   <div class="wrap">
-    <p class="eyebrow rv">04 · The opportunity</p>
+    <p class="eyebrow rv">04 · The solution</p>
+    <h2 class="sw" data-split>Factory to her door. Nobody in between.</h2>
+    <p class="sub rv d1">We buy straight from the factory in China, book the ship ourselves, store in our own warehouse and deliver with our own drivers. Every hand that touches the product is ours.</p>
+
+    <div class="chains" id="chains">
+      <div class="chain street">
+        <div class="chain-title"><span>The street today · a baby stroller</span><span class="price"><span id="chStreet">$38</span><small>what she pays</small></span></div>
+        <div class="chain-scroll"><div class="chain-row">
+          <div class="node" style="--i:0"><span class="ic">🏭</span><b>Factory</b><small>China</small></div>
+          <div class="link" style="--i:0"></div>
+          <div class="node mid" style="--i:1"><span class="ic">🧑‍💼</span><b>Agent</b><small class="tag">+markup</small></div>
+          <div class="link" style="--i:1"></div>
+          <div class="node mid" style="--i:2"><span class="ic">🛃</span><b>Importer</b><small class="tag">+markup</small></div>
+          <div class="link" style="--i:2"></div>
+          <div class="node mid" style="--i:3"><span class="ic">🏬</span><b>Wholesaler</b><small class="tag">+markup</small></div>
+          <div class="link" style="--i:3"></div>
+          <div class="node mid" style="--i:4"><span class="ic">🧑‍🔧</span><b>Merchant</b><small class="tag">+markup</small></div>
+          <div class="link" style="--i:4"></div>
+          <div class="node" style="--i:5"><span class="ic">🏠</span><b>Her door</b><small>weeks later</small></div>
+          <div class="chain-cut"></div>
+        </div></div>
+      </div>
+      <div class="chain jejat">
+        <div class="chain-title"><span>Jejat.com · the same stroller</span><span class="price"><span id="chJejat">$0</span><small>next day, at her door</small></span></div>
+        <div class="chain-scroll"><div class="chain-row">
+          <div class="node" style="--i:0"><span class="ic">🏭</span><b>Factory</b><small>China, direct</small></div>
+          <div class="link" style="--i:0"></div>
+          <div class="node" style="--i:1"><span class="ic">🚢</span><b>Shipping</b><small>booked by us</small></div>
+          <div class="link" style="--i:1"></div>
+          <div class="node" style="--i:2"><span class="ic">📦</span><b>Our warehouse</b><small>$0 rent</small></div>
+          <div class="link" style="--i:2"></div>
+          <div class="node" style="--i:3"><span class="ic">🛵</span><b>Our driver</b><small>next day</small></div>
+          <div class="link" style="--i:3"></div>
+          <div class="node" style="--i:4"><span class="ic">🏠</span><b>Her door</b><small>40% cheaper</small></div>
+        </div></div>
+        <div class="ride-lane" aria-hidden="true"></div>
+        <img class="chain-rider" src="/assets/delivery-guy.png" alt="">
+      </div>
+    </div>
+
+    <div class="cards c2">
+      <div class="card accent rv">
+        <h3>Built for the woman who runs the household</h3>
+        <p>She decides what the family buys, she is already on Instagram and TikTok, and she is the one the street overcharges most. Jejat is designed around her: quality first, honest prices, delivered to her door.</p>
+      </div>
+      <div class="card rv d1">
+        <h3>The first 150 products</h3>
+        <div class="cats">
+          <span class="cat">💄 Beauty <b data-count="40" data-plain>0</b></span>
+          <span class="cat">👜 Accessories <b data-count="25" data-plain>0</b></span>
+          <span class="cat">🍼 Babies <b data-count="30" data-plain>0</b></span>
+          <span class="cat">💇‍♀️ Women's electronics <b data-count="25" data-plain>0</b></span>
+          <span class="cat">🏠 Household <b data-count="30" data-plain>0</b></span>
+        </div>
+        <p class="foot">Quality goods the street sells badly, in the categories she buys every month.</p>
+      </div>
+    </div>
+    <div class="strip rv">Four hands touch the product, all of them ours. That is where the 40% comes from.</div>
+  </div>
+</section>
+
+<!-- ================= OPPORTUNITY ================= -->
+<section id="s-opportunity" data-label="Opportunity">
+  <div class="watermark">05</div>
+  <div class="wrap">
+    <p class="eyebrow rv">05 · The opportunity</p>
     <h2 class="sw" data-split>Syria is reopening and e-commerce's seat is still empty</h2>
     <div class="cards c3">
       <div class="card rv tilt">
@@ -731,9 +836,9 @@
 
 <!-- ================= ADVANTAGES ================= -->
 <section id="s-advantages" data-label="Advantages">
-  <div class="watermark">05</div>
+  <div class="watermark">06</div>
   <div class="wrap">
-    <p class="eyebrow rv">05 · Unfair advantages</p>
+    <p class="eyebrow rv">06 · Unfair advantages</p>
     <h2 class="sw" data-split>Zero rent. Zero dev cost.</h2>
     <div class="adv-grid">
       <div class="card rv tilt">
@@ -765,9 +870,9 @@
 
 <!-- ================= PRODUCT ================= -->
 <section id="s-product" data-label="Product">
-  <div class="watermark">06</div>
+  <div class="watermark">07</div>
   <div class="wrap">
-    <p class="eyebrow rv">06 · The product</p>
+    <p class="eyebrow rv">07 · The product</p>
     <h2 class="sw" data-split>Not just a shop: the full delivery machine</h2>
     <p class="sub rv d1">Three systems, one codebase. Watch them run:</p>
     <div class="demos" id="demos">
@@ -853,9 +958,9 @@
 
 <!-- ================= BUSINESS MODEL ================= -->
 <section id="s-model" data-label="Model">
-  <div class="watermark">07</div>
+  <div class="watermark">08</div>
   <div class="wrap">
-    <p class="eyebrow rv">07 · Business model</p>
+    <p class="eyebrow rv">08 · Business model</p>
     <h2 class="sw" data-split>40% cheaper than the street. 53% gross margin.</h2>
     <div class="split">
       <div>
@@ -885,9 +990,9 @@
 
 <!-- ================= GTM ================= -->
 <section id="s-gtm" data-label="Go-to-market">
-  <div class="watermark">08</div>
+  <div class="watermark">09</div>
   <div class="wrap">
-    <p class="eyebrow rv">08 · Go-to-market</p>
+    <p class="eyebrow rv">09 · Go-to-market</p>
     <h2 class="sw" data-split>Every delivered box is an ad</h2>
     <div class="gtm-road" id="gtmRoad" aria-hidden="true">
       <div class="lane"></div>
@@ -929,9 +1034,9 @@
 
 <!-- ================= MARKET ================= -->
 <section id="s-market" data-label="Market">
-  <div class="watermark">09</div>
+  <div class="watermark">10</div>
   <div class="wrap">
-    <p class="eyebrow rv">09 · The market size</p>
+    <p class="eyebrow rv">10 · The market size</p>
     <h2 class="sw" data-split>Win Aleppo first. Then all of Syria.</h2>
     <div class="market-grid rv-io">
       <div class="circles">
@@ -960,9 +1065,9 @@
 
 <!-- ================= REVENUE ================= -->
 <section id="s-revenue" data-label="Revenue">
-  <div class="watermark">10</div>
+  <div class="watermark">11</div>
   <div class="wrap">
-    <p class="eyebrow rv">10 · Revenue projection</p>
+    <p class="eyebrow rv">11 · Revenue projection</p>
     <h2 class="sw" data-split>Aleppo alone reaches $2.2M / year</h2>
     <div class="split">
       <div class="chart rv-io">
@@ -982,9 +1087,9 @@
 
 <!-- ================= COMPETITION ================= -->
 <section id="s-competition" data-label="Competition">
-  <div class="watermark">11</div>
+  <div class="watermark">12</div>
   <div class="wrap">
-    <p class="eyebrow rv">11 · The competition</p>
+    <p class="eyebrow rv">12 · The competition</p>
     <h2 class="sw" data-split>Now is the right time to take the risk.</h2>
     <div class="tablewrap rv-io">
       <table>
@@ -1041,9 +1146,9 @@
 
 <!-- ================= ASK ================= -->
 <section id="s-ask" data-label="The ask">
-  <div class="watermark">12</div>
+  <div class="watermark">13</div>
   <div class="wrap">
-    <p class="eyebrow rv">12 · The pre-seed</p>
+    <p class="eyebrow rv">13 · The pre-seed</p>
     <h2 class="sw" data-split>Raising pre-seed <span class="hl">$200k</span> to launch Aleppo</h2>
     <div class="split" style="align-items: start;">
       <div class="rv-io">
@@ -1509,6 +1614,33 @@
       if (alive) requestAnimationFrame(frame);
       else ctx.clearRect(0, 0, canvas.width, canvas.height);
     })(performance.now());
+  }
+
+  /* ---------- solution: two chains ---------- */
+  var chains = $("#chains");
+  if (chains) {
+    var chStreet = $("#chStreet"), chJejat = $("#chJejat");
+    var countTo = function (el, from, to, dur) {
+      var t0 = null;
+      (function step(t) {
+        if (!t0) t0 = t;
+        var p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+        el.textContent = "$" + Math.round(from + (to - from) * e);
+        if (p < 1) requestAnimationFrame(step); else el.textContent = "$" + to;
+      })(performance.now());
+    };
+    var chIO = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        chIO.unobserve(chains);
+        chains.classList.add("in");
+        if (reduced) { chains.classList.add("cut"); chains.classList.add("go"); chStreet.textContent = "$200"; chJejat.textContent = "$120"; return; }
+        setTimeout(function () { countTo(chStreet, 38, 200, 1800); }, 500);
+        setTimeout(function () { chains.classList.add("cut"); }, 2600);
+        setTimeout(function () { chains.classList.add("go"); countTo(chJejat, 0, 120, 1800); }, 3100);
+      });
+    }, { threshold: 0.35 });
+    chIO.observe(chains);
   }
 })();
 </script>
