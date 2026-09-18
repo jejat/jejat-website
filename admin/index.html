@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jejat Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../assets/chicken-logo-email.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&family=Tajawal:wght@500;700&display=swap">
+<link rel="stylesheet" href="admin.css?v=1">
+</head>
+<body>
+
+<!-- ===== login ===== -->
+<div class="login" id="login">
+  <form id="loginForm">
+    <img src="../assets/chicken-logo.png" alt="">
+    <h1>Jejat Admin</h1>
+    <p>Beta study dashboard</p>
+    <label>Email <input id="lEmail" type="email" autocomplete="username" required></label>
+    <label>Password <input id="lPass" type="password" autocomplete="current-password" required></label>
+    <div class="err" id="lErr"></div>
+    <button class="btn" type="submit" id="lBtn">Sign in</button>
+  </form>
+</div>
+
+<!-- ===== app ===== -->
+<div class="shell" id="app" hidden>
+  <aside class="side">
+    <div class="brand"><img src="../assets/chicken-logo.png" alt=""><div><b>Jejat<span>.com</span></b><small>Beta study</small></div></div>
+    <button class="nav on" data-page="overview"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>Overview<span></span></button>
+    <button class="nav" data-page="products"><svg viewBox="0 0 24 24"><path d="M3 17l5-6 4 4 4-7 5 6"/></svg>Trending products<span></span></button>
+    <button class="nav" data-page="visitors"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Visitors<span></span></button>
+    <button class="nav" data-page="categories"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h6"/></svg>Categories<span></span></button>
+    <div class="grow"></div>
+    <label class="toggle"><input type="checkbox" id="exclTest" checked><span class="sw"></span>Hide test visitors</label>
+    <div class="who" id="who"></div>
+    <button class="nav" id="logout"><svg viewBox="0 0 24 24"><path d="M10 17l5-5-5-5M15 12H3M21 3v18"/></svg>Sign out<span></span></button>
+  </aside>
+
+  <main class="main">
+    <!-- overview -->
+    <section class="page on" id="page-overview">
+      <div class="head"><h1>Overview</h1><span class="meta" id="ovMeta"></span><button class="btn ghost sm" id="ovRefresh">↻ Refresh</button></div>
+      <div class="kpis" id="kpis"></div>
+      <div class="grid2">
+        <div class="card"><h3>Last 14 days <small>visitors and favorites per day</small></h3><div class="legend"><span><i style="background:var(--orange-deep)"></i>New visitors</span><span><i style="background:var(--teal)"></i>Favorites</span></div><div class="chart" id="chDaily"></div></div>
+        <div class="card"><h3>Live feed <small>latest activity</small></h3><div class="feed" id="feed"></div></div>
+      </div>
+      <div class="grid3">
+        <div class="card"><h3>Countries</h3><div class="hbars" id="chCountries"></div></div>
+        <div class="card"><h3>Where they live</h3><div class="hbars" id="chRes"></div></div>
+        <div class="card"><h3>Age</h3><div class="hbars" id="chAge"></div></div>
+      </div>
+      <div class="card"><h3>Top 10 right now <small>by trending score</small></h3><div class="tbl-wrap" style="box-shadow:none"><table id="topTable"></table></div></div>
+    </section>
+
+    <!-- products -->
+    <section class="page" id="page-products">
+      <div class="head"><h1>Trending products</h1><span class="meta" id="prMeta"></span><button class="btn ghost sm" id="prCsv">⬇ Export CSV</button></div>
+      <div class="filters">
+        <select id="fCat"><option value="">All categories</option></select>
+        <select id="fRes"><option value="">All residences</option><option value="aleppo">Aleppo</option><option value="damascus">Damascus</option><option value="syria_other">Elsewhere in Syria</option><option value="abroad">Abroad</option></select>
+        <select id="fAge"><option value="">All ages</option><option value="18_24">18–24</option><option value="25_34">25–34</option><option value="35_44">35–44</option><option value="45_plus">45+</option></select>
+        <input id="fSearch" placeholder="Search product…">
+        <span class="sp"></span>
+        <span class="muted" id="prCount"></span>
+      </div>
+      <div class="tbl-wrap"><table id="prTable"></table></div>
+    </section>
+
+    <!-- visitors -->
+    <section class="page" id="page-visitors">
+      <div class="head"><h1>Visitors</h1><span class="meta" id="viMeta"></span><button class="btn ghost sm" id="viCsv">⬇ Export CSV</button></div>
+      <div class="filters">
+        <select id="vFilter"><option value="">Everyone</option><option value="registered">Registered only</option><option value="unregistered">Landed, not registered</option><option value="top">Saved a top 25</option></select>
+        <input id="vSearch" placeholder="Search name, email, phone…">
+        <span class="sp"></span>
+        <span class="muted" id="viCount"></span>
+      </div>
+      <div class="tbl-wrap"><table id="viTable"></table></div>
+    </section>
+
+    <!-- categories -->
+    <section class="page" id="page-categories">
+      <div class="head"><h1>Categories</h1><span class="meta" id="caMeta"></span></div>
+      <div class="grid2">
+        <div class="card"><h3>Favorite rate <small>favorites per 100 views</small></h3><div class="hbars" id="chCatRate"></div></div>
+        <div class="card"><h3>Top-25 picks</h3><div class="hbars" id="chCatTop"></div></div>
+      </div>
+      <div class="tbl-wrap"><table id="caTable"></table></div>
+    </section>
+  </main>
+</div>
+
+<div class="drawer-bg" id="drawerBg"></div>
+<aside class="drawer" id="drawer"></aside>
+
+<script src="admin.js?v=1"></script>
+</body>
+</html>

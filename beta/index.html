@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jejat.com</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FFFDF8">
+<link rel="icon" href="../assets/chicken-logo-email.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://mbzzbfvletthtvixdxxm.supabase.co">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body class="locked">
+<div class="glow" aria-hidden="true"></div>
+
+<!-- ===== header ===== -->
+<header class="top">
+  <div class="top-row">
+    <a class="brand" href="./" aria-label="Jejat.com">
+      <img src="../assets/chicken-logo.png" alt="" width="40">
+      <span class="wordmark">Jejat<span class="dotcom">.com</span></span>
+    </a>
+    <span class="top-spacer"></span>
+    <button class="pill lang-pill" id="langBtn" aria-label="Language"><span data-l="ar">ع</span>&nbsp;·&nbsp;<span data-l="en">EN</span></button>
+    <button class="pill fav-pill" id="favPill" aria-label="Favorites">
+      <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.1C.7 8.2 3.1 4.5 6.8 4.5c2 0 3.4 1 4.2 2.3.8-1.3 2.2-2.3 4.2-2.3 3.7 0 6.1 3.7 4.4 7.4C19.5 16.4 12 21 12 21z"/></svg>
+      <span class="n" id="favCount">0</span>
+    </button>
+  </div>
+  <div class="progress" id="progress">
+    <div class="track"><div class="fill" id="progFill"></div><img class="walker" id="walker" src="../assets/chicken-logo.png" alt=""></div>
+    <span class="label" id="progLabel"></span>
+  </div>
+</header>
+
+<!-- ===== discover view ===== -->
+<main>
+  <section class="view on" id="viewDiscover">
+    <div class="hero">
+      <h1 id="greet"></h1>
+      <p id="tagline"></p>
+    </div>
+    <div class="chips-wrap"><div class="chips" id="chips"></div></div>
+    <div class="wrap">
+      <div class="loader" id="loader"><img src="../assets/chicken-logo.png" alt=""><div data-i="loading"></div></div>
+      <div class="grid" id="grid"></div>
+      <div class="sentinel" id="sentinel"></div>
+      <div class="end-note" id="endNote" hidden><img src="../assets/chicken-logo.png" alt=""><div data-i="end_all"></div></div>
+    </div>
+  </section>
+
+  <!-- ===== favorites view ===== -->
+  <section class="view" id="viewFav">
+    <div class="wrap">
+      <div class="fav-head">
+        <h2><span data-i="fav_title"></span> <span class="n" id="favCount2">0</span></h2>
+        <button class="btn sm" id="topBtn" hidden></button>
+      </div>
+      <div class="cta-card" id="topCta" hidden>
+        <img src="../assets/chicken-logo.png" alt="">
+        <div class="t"><h3 data-i="top_cta_title"></h3><p data-i="top_cta_sub"></p></div>
+        <button class="btn sm" id="topStart" data-i="top_cta_btn"></button>
+      </div>
+      <div class="pickbar" id="pickbar">
+        <span class="cnt" id="pickCount">0 / 25</span>
+        <span class="hint" data-i="top_pick_mode"></span>
+        <button class="btn sm ghost" id="pickCancel" data-i="cancel"></button>
+        <button class="btn sm" id="pickSave" data-i="top_save"></button>
+      </div>
+      <div class="empty" id="favEmpty" hidden><img src="../assets/chicken-logo.png" alt=""><div data-i="fav_empty"></div></div>
+      <div class="grid" id="favGrid"></div>
+    </div>
+  </section>
+</main>
+
+<!-- ===== dock ===== -->
+<nav class="dock" aria-label="Navigation">
+  <button id="dockDiscover" class="on">
+    <svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg>
+    <span data-i="discover"></span>
+  </button>
+  <button id="dockFav">
+    <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.1C.7 8.2 3.1 4.5 6.8 4.5c2 0 3.4 1 4.2 2.3.8-1.3 2.2-2.3 4.2-2.3 3.7 0 6.1 3.7 4.4 7.4C19.5 16.4 12 21 12 21z"/></svg>
+    <span data-i="favorites"></span><span class="badge" id="favBadge" hidden>0</span>
+  </button>
+  <button id="dockShare">
+    <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+    <span data-i="share"></span>
+  </button>
+</nav>
+
+<!-- ===== product sheet ===== -->
+<div class="sheet-bg" id="sheetBg"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true">
+  <div class="sheet-img">
+    <div class="grab"></div>
+    <img id="sheetImg" alt="">
+    <button class="x" id="sheetClose" aria-label="Close">✕</button>
+    <button class="nav prev" id="sheetPrev" aria-label="Previous">‹</button>
+    <button class="nav next" id="sheetNext" aria-label="Next">›</button>
+  </div>
+  <div class="sheet-body">
+    <span class="cat" id="sheetCat"></span>
+    <h2 id="sheetName"></h2>
+    <p class="sub" id="sheetSub"></p>
+    <div class="actions">
+      <button class="btn heart-btn" id="sheetHeart">
+        <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.1C.7 8.2 3.1 4.5 6.8 4.5c2 0 3.4 1 4.2 2.3.8-1.3 2.2-2.3 4.2-2.3 3.7 0 6.1 3.7 4.4 7.4C19.5 16.4 12 21 12 21z"/></svg>
+        <span id="sheetHeartLabel"></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== welcome popup ===== -->
+<div class="welcome" id="welcome">
+  <form class="wcard" id="wform" novalidate>
+    <img class="mascot" src="../assets/chicken-logo.png" alt="">
+    <button type="button" class="pill lang-pill wl" id="langBtn2" aria-label="Language"><span data-l="ar">ع</span>&nbsp;·&nbsp;<span data-l="en">EN</span></button>
+    <h2 data-i="welcome_title"></h2>
+    <p class="lead" data-i="welcome_sub"></p>
+    <div class="two">
+      <div class="field"><label for="fFirst" data-i="first_name"></label><input id="fFirst" name="first" autocomplete="given-name" required></div>
+      <div class="field"><label for="fLast" data-i="last_name"></label><input id="fLast" name="last" autocomplete="family-name" required></div>
+    </div>
+    <div class="field"><label for="fPhone"><span data-i="phone"></span> <span class="opt" data-i="optional"></span></label><input id="fPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="09xx xxx xxx" dir="ltr"></div>
+    <div class="field"><label for="fEmail"><span data-i="email"></span> <span class="opt" data-i="optional"></span></label><input id="fEmail" name="email" type="email" inputmode="email" autocomplete="email" dir="ltr"></div>
+    <div class="field"><label data-i="residence"></label><div class="opts" id="resOpts"></div></div>
+    <div class="field"><label data-i="age"></label><div class="opts" id="ageOpts"></div></div>
+    <div class="err" id="werr"></div>
+    <button class="btn go" type="submit" data-i="start"></button>
+    <p class="note" data-i="privacy"></p>
+  </form>
+</div>
+
+<div class="toasts" id="toasts"></div>
+<canvas id="confetti" hidden></canvas>
+
+<script src="app.js?v=1"></script>
+</body>
+</html>

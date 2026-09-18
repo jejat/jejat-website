@@ -1,0 +1,438 @@
+{
+ "categories": [
+  {
+   "key": "makeup",
+   "en": "Makeup",
+   "ar": "مكياج",
+   "emoji": "💄"
+  },
+  {
+   "key": "bags",
+   "en": "Bags",
+   "ar": "حقائب",
+   "emoji": "👜"
+  },
+  {
+   "key": "skincare",
+   "en": "Creams & skincare",
+   "ar": "كريمات وعناية",
+   "emoji": "🧴"
+  },
+  {
+   "key": "shoes",
+   "en": "Shoes",
+   "ar": "أحذية",
+   "emoji": "👟"
+  },
+  {
+   "key": "home",
+   "en": "Home decor",
+   "ar": "ديكور المنزل",
+   "emoji": "🕯️"
+  },
+  {
+   "key": "baby",
+   "en": "Baby goods",
+   "ar": "مستلزمات الأطفال",
+   "emoji": "🍼"
+  },
+  {
+   "key": "accessories",
+   "en": "Accessories",
+   "ar": "إكسسوارات",
+   "emoji": "💍"
+  },
+  {
+   "key": "electronics",
+   "en": "Electronics",
+   "ar": "إلكترونيات",
+   "emoji": "🎧"
+  }
+ ],
+ "products": [
+  {
+   "sku": "MAK-01",
+   "category": "makeup",
+   "name_en": "Rose-gold matte lipstick",
+   "name_ar": "أحمر شفاه مطفي بلون ذهبي وردي",
+   "image": "assets/products/makeup-01.webp",
+   "prompt": "Clean e-commerce product photograph of a rose-gold matte lipstick, cap off beside it, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "MAK-02",
+   "category": "makeup",
+   "name_en": "12-colour eyeshadow palette",
+   "name_ar": "باليت ظلال عيون 12 لون",
+   "image": "assets/products/makeup-02.webp",
+   "prompt": "Clean e-commerce product photograph of an open 12-pan eyeshadow palette in warm neutral and rosy tones, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "MAK-03",
+   "category": "makeup",
+   "name_en": "Volumising black mascara",
+   "name_ar": "ماسكارا مكثفة سوداء",
+   "image": "assets/products/makeup-03.webp",
+   "prompt": "Clean e-commerce product photograph of a sleek black volumising mascara tube with the wand beside it, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "MAK-04",
+   "category": "makeup",
+   "name_en": "Liquid foundation with pump",
+   "name_ar": "كريم أساس سائل مع مضخة",
+   "image": "assets/products/makeup-04.webp",
+   "prompt": "Clean e-commerce product photograph of a glass bottle of liquid foundation with a pump, medium beige shade, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "MAK-05",
+   "category": "makeup",
+   "name_en": "Blush and highlighter duo",
+   "name_ar": "بلاشر وهايلايتر",
+   "image": "assets/products/makeup-05.webp",
+   "prompt": "Clean e-commerce product photograph of a compact blush and highlighter duo, peach and champagne shades, open lid, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "MAK-06",
+   "category": "makeup",
+   "name_en": "Makeup brush set with pouch",
+   "name_ar": "طقم فرش مكياج مع حافظة",
+   "image": "assets/products/makeup-06.webp",
+   "prompt": "Clean e-commerce product photograph of a set of 8 rose-gold makeup brushes fanned out beside a blush-pink pouch, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "BAG-01",
+   "category": "bags",
+   "name_en": "Quilted crossbody bag",
+   "name_ar": "حقيبة كروس مبطنة",
+   "image": "assets/products/bags-01.webp",
+   "prompt": "Clean e-commerce product photograph of a small quilted crossbody bag in blush pink with a gold chain strap, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "BAG-02",
+   "category": "bags",
+   "name_en": "Structured tote bag",
+   "name_ar": "حقيبة توت كبيرة",
+   "image": "assets/products/bags-02.webp",
+   "prompt": "Clean e-commerce product photograph of a structured beige leather tote bag, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "BAG-03",
+   "category": "bags",
+   "name_en": "Mini backpack",
+   "name_ar": "حقيبة ظهر صغيرة",
+   "image": "assets/products/bags-03.webp",
+   "prompt": "Clean e-commerce product photograph of a mini fashion backpack in caramel faux leather, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "BAG-04",
+   "category": "bags",
+   "name_en": "Evening clutch with chain",
+   "name_ar": "كلاتش سهرة بسلسلة",
+   "image": "assets/products/bags-04.webp",
+   "prompt": "Clean e-commerce product photograph of an elegant gold evening clutch with a thin chain, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "BAG-05",
+   "category": "bags",
+   "name_en": "Woven straw summer bag",
+   "name_ar": "حقيبة قش صيفية",
+   "image": "assets/products/bags-05.webp",
+   "prompt": "Clean e-commerce product photograph of a round woven straw summer bag with leather handles, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "BAG-06",
+   "category": "bags",
+   "name_en": "Leather wallet with card slots",
+   "name_ar": "محفظة جلد بجيوب للبطاقات",
+   "image": "assets/products/bags-06.webp",
+   "prompt": "Clean e-commerce product photograph of a slim dusty-rose leather wallet, slightly open showing card slots, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "SKI-01",
+   "category": "skincare",
+   "name_en": "Vitamin C face serum",
+   "name_ar": "سيروم فيتامين سي للوجه",
+   "image": "assets/products/skincare-01.webp",
+   "prompt": "Clean e-commerce product photograph of an amber glass dropper bottle of vitamin C face serum, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "SKI-02",
+   "category": "skincare",
+   "name_en": "Hyaluronic moisturiser",
+   "name_ar": "كريم مرطب بالهيالورونيك",
+   "image": "assets/products/skincare-02.webp",
+   "prompt": "Clean e-commerce product photograph of a white jar of hyaluronic acid moisturiser, lid beside it, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "SKI-03",
+   "category": "skincare",
+   "name_en": "SPF 50 sunscreen",
+   "name_ar": "واقي شمس SPF 50",
+   "image": "assets/products/skincare-03.webp",
+   "prompt": "Clean e-commerce product photograph of a tube of SPF 50 face sunscreen in white and peach, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "SKI-04",
+   "category": "skincare",
+   "name_en": "Gentle foaming cleanser",
+   "name_ar": "غسول وجه رغوي لطيف",
+   "image": "assets/products/skincare-04.webp",
+   "prompt": "Clean e-commerce product photograph of a pump bottle of gentle foaming face cleanser, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "SKI-05",
+   "category": "skincare",
+   "name_en": "Sheet mask set",
+   "name_ar": "مجموعة ماسكات ورقية",
+   "image": "assets/products/skincare-05.webp",
+   "prompt": "Clean e-commerce product photograph of a stack of five pastel sheet mask sachets, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "SKI-06",
+   "category": "skincare",
+   "name_en": "Hand cream trio",
+   "name_ar": "طقم 3 كريمات لليدين",
+   "image": "assets/products/skincare-06.webp",
+   "prompt": "Clean e-commerce product photograph of three small hand cream tubes in pastel colours arranged in a row, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "SHO-01",
+   "category": "shoes",
+   "name_en": "White chunky sneakers",
+   "name_ar": "حذاء رياضي أبيض",
+   "image": "assets/products/shoes-01.webp",
+   "prompt": "Clean e-commerce product photograph of a pair of white chunky women's sneakers, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "SHO-02",
+   "category": "shoes",
+   "name_en": "Block heel sandals",
+   "name_ar": "صندل بكعب عريض",
+   "image": "assets/products/shoes-02.webp",
+   "prompt": "Clean e-commerce product photograph of a pair of nude block-heel women's sandals, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "SHO-03",
+   "category": "shoes",
+   "name_en": "Ballet flats",
+   "name_ar": "حذاء باليرينا",
+   "image": "assets/products/shoes-03.webp",
+   "prompt": "Clean e-commerce product photograph of a pair of blush-pink ballet flats with a small bow, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "SHO-04",
+   "category": "shoes",
+   "name_en": "Ankle boots",
+   "name_ar": "بوت نسائي قصير",
+   "image": "assets/products/shoes-04.webp",
+   "prompt": "Clean e-commerce product photograph of a pair of tan suede women's ankle boots, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "SHO-05",
+   "category": "shoes",
+   "name_en": "Fluffy home slippers",
+   "name_ar": "شبشب منزلي فرو",
+   "image": "assets/products/shoes-05.webp",
+   "prompt": "Clean e-commerce product photograph of a pair of fluffy cream home slippers, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "SHO-06",
+   "category": "shoes",
+   "name_en": "Platform slides",
+   "name_ar": "شبشب صيفي بنعل مرتفع",
+   "image": "assets/products/shoes-06.webp",
+   "prompt": "Clean e-commerce product photograph of a pair of beige platform slide sandals, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "HOM-01",
+   "category": "home",
+   "name_en": "Scented candle set",
+   "name_ar": "طقم شموع معطرة",
+   "image": "assets/products/home-01.webp",
+   "prompt": "Clean e-commerce product photograph of three scented candles in frosted glass jars with wooden lids, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "HOM-02",
+   "category": "home",
+   "name_en": "Ceramic vase",
+   "name_ar": "مزهرية سيراميك",
+   "image": "assets/products/home-02.webp",
+   "prompt": "Clean e-commerce product photograph of a matte terracotta ceramic vase with dried pampas grass, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "HOM-03",
+   "category": "home",
+   "name_en": "Knit throw blanket",
+   "name_ar": "بطانية ديكور محبوكة",
+   "image": "assets/products/home-03.webp",
+   "prompt": "Clean e-commerce product photograph of a folded chunky-knit throw blanket in cream, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "HOM-04",
+   "category": "home",
+   "name_en": "Round wall mirror, gold frame",
+   "name_ar": "مرآة حائط دائرية بإطار ذهبي",
+   "image": "assets/products/home-04.webp",
+   "prompt": "Clean e-commerce product photograph of a round wall mirror with a thin gold frame, leaning, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "HOM-05",
+   "category": "home",
+   "name_en": "Aroma diffuser",
+   "name_ar": "فواحة عطر كهربائية",
+   "image": "assets/products/home-05.webp",
+   "prompt": "Clean e-commerce product photograph of a wood-grain ultrasonic aroma diffuser with a soft mist, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "HOM-06",
+   "category": "home",
+   "name_en": "LED string lights",
+   "name_ar": "إضاءة زينة LED",
+   "image": "assets/products/home-06.webp",
+   "prompt": "Clean e-commerce product photograph of a coil of warm-white LED fairy string lights, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "BAB-01",
+   "category": "baby",
+   "name_en": "Lightweight stroller",
+   "name_ar": "عربة أطفال خفيفة",
+   "image": "assets/products/baby-01.webp",
+   "prompt": "Clean e-commerce product photograph of a lightweight compact baby stroller in grey and cream, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "BAB-02",
+   "category": "baby",
+   "name_en": "Baby carrier",
+   "name_ar": "حمالة أطفال",
+   "image": "assets/products/baby-02.webp",
+   "prompt": "Clean e-commerce product photograph of an ergonomic baby carrier in soft grey, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "BAB-03",
+   "category": "baby",
+   "name_en": "Baby bottle set",
+   "name_ar": "طقم رضاعات",
+   "image": "assets/products/baby-03.webp",
+   "prompt": "Clean e-commerce product photograph of a set of three baby bottles in pastel colours, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "BAB-04",
+   "category": "baby",
+   "name_en": "Plush comforter",
+   "name_ar": "دبدوب قماش ناعم",
+   "image": "assets/products/baby-04.webp",
+   "prompt": "Clean e-commerce product photograph of a soft plush bunny comforter toy in cream, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "BAB-05",
+   "category": "baby",
+   "name_en": "Muslin swaddle set",
+   "name_ar": "طقم لفافات موسلين",
+   "image": "assets/products/baby-05.webp",
+   "prompt": "Clean e-commerce product photograph of three folded muslin swaddle blankets in pastel prints, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "BAB-06",
+   "category": "baby",
+   "name_en": "Diaper bag backpack",
+   "name_ar": "حقيبة حفاضات",
+   "image": "assets/products/baby-06.webp",
+   "prompt": "Clean e-commerce product photograph of a beige diaper bag backpack with side pockets, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "ACC-01",
+   "category": "accessories",
+   "name_en": "Gold hoop earrings",
+   "name_ar": "حلق دائري ذهبي",
+   "image": "assets/products/accessories-01.webp",
+   "prompt": "Clean e-commerce product photograph of a pair of medium gold hoop earrings, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "ACC-02",
+   "category": "accessories",
+   "name_en": "Layered necklace",
+   "name_ar": "عقد طبقات ذهبي",
+   "image": "assets/products/accessories-02.webp",
+   "prompt": "Clean e-commerce product photograph of a delicate gold layered necklace with tiny pendants, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "ACC-03",
+   "category": "accessories",
+   "name_en": "Oversized sunglasses",
+   "name_ar": "نظارات شمسية كبيرة",
+   "image": "assets/products/accessories-03.webp",
+   "prompt": "Clean e-commerce product photograph of a pair of oversized tortoiseshell sunglasses, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "ACC-04",
+   "category": "accessories",
+   "name_en": "Satin hair scrunchies",
+   "name_ar": "ربطات شعر ساتان",
+   "image": "assets/products/accessories-04.webp",
+   "prompt": "Clean e-commerce product photograph of five satin hair scrunchies in pastel colours, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "ACC-05",
+   "category": "accessories",
+   "name_en": "Minimal wristwatch",
+   "name_ar": "ساعة يد أنيقة",
+   "image": "assets/products/accessories-05.webp",
+   "prompt": "Clean e-commerce product photograph of a minimalist women's wristwatch with a rose-gold case and blush strap, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "ACC-06",
+   "category": "accessories",
+   "name_en": "Silk scarf",
+   "name_ar": "وشاح حرير",
+   "image": "assets/products/accessories-06.webp",
+   "prompt": "Clean e-commerce product photograph of a folded silk scarf with a soft floral print, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "ELE-01",
+   "category": "electronics",
+   "name_en": "Wireless earbuds",
+   "name_ar": "سماعات لاسلكية",
+   "image": "assets/products/electronics-01.webp",
+   "prompt": "Clean e-commerce product photograph of a pair of white wireless earbuds in an open charging case, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "ELE-02",
+   "category": "electronics",
+   "name_en": "Hair dryer",
+   "name_ar": "مجفف شعر",
+   "image": "assets/products/electronics-02.webp",
+   "prompt": "Clean e-commerce product photograph of a modern hair dryer in blush pink and rose gold, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "ELE-03",
+   "category": "electronics",
+   "name_en": "Hair straightener",
+   "name_ar": "مكواة شعر",
+   "image": "assets/products/electronics-03.webp",
+   "prompt": "Clean e-commerce product photograph of a slim ceramic hair straightener in white and gold, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "ELE-04",
+   "category": "electronics",
+   "name_en": "Ring light with tripod",
+   "name_ar": "إضاءة حلقية مع حامل",
+   "image": "assets/products/electronics-04.webp",
+   "prompt": "Clean e-commerce product photograph of a ring light on a small tripod with a phone holder, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "ELE-05",
+   "category": "electronics",
+   "name_en": "Slim power bank",
+   "name_ar": "بطارية متنقلة رفيعة",
+   "image": "assets/products/electronics-05.webp",
+   "prompt": "Clean e-commerce product photograph of a slim lilac power bank with a cable, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  },
+  {
+   "sku": "ELE-06",
+   "category": "electronics",
+   "name_en": "Smart watch",
+   "name_ar": "ساعة ذكية",
+   "image": "assets/products/electronics-06.webp",
+   "prompt": "Clean e-commerce product photograph of a smart watch with a rose-gold case and a light pink strap, centered, on a seamless soft warm cream background, soft diffused daylight, gentle natural shadow, high detail, no text, no logos, no people, square composition"
+  }
+ ]
+}
