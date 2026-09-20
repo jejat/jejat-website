@@ -524,3 +524,11 @@ html[dir="rtl"] .qcard.fly-pass { transform: translate(120vw, -10vh) rotate(18de
 .sheet-img .dots i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.7); box-shadow: 0 1px 3px rgba(0,0,0,.25); cursor: pointer; transition: transform .2s, background .2s; }
 .sheet-img .dots i.on { background: var(--orange); transform: scale(1.25); }
 @media (min-width: 700px) { .sheet { max-height: 88vh; } .sheet-body { overflow: auto; } }
+
+/* ---- v4: prices ---- */
+.card .row { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: 6px; }
+.card .row .cat { margin-top: 0; }
+.card .price { font-family: var(--display); font-weight: 800; font-size: .95rem; color: var(--ink); direction: ltr; white-space: nowrap; }
+.sheet-body .titlerow { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.sheet-body .titlerow .price { font-family: var(--display); font-weight: 800; font-size: 1.3rem; color: var(--orange-deep); direction: ltr; white-space: nowrap; }
+.qcard .qprice { color: var(--ink); direction: ltr; unicode-bidi: isolate; }

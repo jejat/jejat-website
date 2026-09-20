@@ -139,6 +139,7 @@
       { key: 'name_en', label: 'Product', cell: r => `<div style="display:flex;gap:10px;align-items:center"><img class="thumb" src="${img(r.image_url)}" alt="" loading="lazy"><div><div class="name">${esc(r.name_en)}</div><div class="sub">${esc(r.name_ar)}</div></div></div>` },
       { key: 'brand', label: 'Brand', cell: r => r.brand ? `<b style="font-size:.78rem">${esc(r.brand)}</b>` : '<span class="muted">–</span>' },
       { key: 'category', label: 'Category', cell: r => `<span class="tag">${esc(catName(r.category))}</span>${r.sub_en ? ` <span class="muted" style="font-size:.74rem">${esc(r.sub_en)}</span>` : ''}` },
+      { key: 'price', label: 'Price', r: true, cell: r => r.price != null ? `$${Number(r.price).toFixed(2)}` : '<span class="muted">–</span>' },
       { key: 'active', label: 'Live', cell: r => `<button class="btn sm ${r.active ? 'ghost' : ''}" data-toggle="${r.id}" title="${r.active ? 'Hide from visitors' : 'Show to visitors'}">${r.active ? 'On' : 'Off'}</button>` },
       { key: 'reach', label: 'Seen by', cell: r => `<div class="bar-cell"><span class="trk"><span class="fil" style="width:${100 * r.reach / maxReach}%"></span></span><span class="num">${fmt(r.reach)}</span></div>` },
       { key: 'favorites', label: 'Favorites', r: true, cell: r => `<b>${fmt(r.favorites)}</b>` },
@@ -262,7 +263,7 @@
   ['fCat'].forEach(id => $(id).onchange = renderProducts);
   $('fSearch').oninput = renderProducts; $('fBrand').onchange = renderProducts;
   $('vFilter').onchange = renderVisitors; $('vSearch').oninput = renderVisitors;
-  $('prCsv').onclick = () => csv(sortRows(S.products, S.sort.products), [['rank', (r) => S.products.indexOf(r) + 1], ['sku', 'sku'], ['brand', 'brand'], ['name_en', 'name_en'], ['step', 'sub_en'], ['live', 'active'], ['name_ar', 'name_ar'], ['category', 'category'], ['seen_by', 'reach'], ['favorites', 'favorites'], ['fav_rate_pct', 'fav_rate'], ['opened', 'clicks'], ['passed', 'passes'], ['top25_picks', 'top_picks'], ['score', 'score'], ['supplier_link', 'source_url']], `jejat-products-${new Date().toISOString().slice(0, 10)}.csv`);
+  $('prCsv').onclick = () => csv(sortRows(S.products, S.sort.products), [['rank', (r) => S.products.indexOf(r) + 1], ['sku', 'sku'], ['brand', 'brand'], ['name_en', 'name_en'], ['step', 'sub_en'], ['price_usd', 'price'], ['live', 'active'], ['name_ar', 'name_ar'], ['category', 'category'], ['seen_by', 'reach'], ['favorites', 'favorites'], ['fav_rate_pct', 'fav_rate'], ['opened', 'clicks'], ['passed', 'passes'], ['top25_picks', 'top_picks'], ['score', 'score'], ['supplier_link', 'source_url']], `jejat-products-${new Date().toISOString().slice(0, 10)}.csv`);
   $('viCsv').onclick = () => csv(S.visitors, [['first_name', 'first_name'], ['last_name', 'last_name'], ['email', 'email'], ['phone', 'phone'], ['residence', 'residence'], ['age', 'age_band'], ['country', 'country'], ['registered_at', 'registered_at'], ['last_seen_at', 'last_seen_at'], ['visits', 'sessions'], ['minutes', 'minutes'], ['seen', 'seen'], ['opened', 'clicks'], ['favorites', 'favorites'], ['top25', 'top_picks'], ['invite_code', 'referral_code'], ['invited_by', 'referred_by_name'], ['is_test', 'is_test']], `jejat-visitors-${new Date().toISOString().slice(0, 10)}.csv`);
   $('drawerBg').onclick = closeDrawer;
   addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });

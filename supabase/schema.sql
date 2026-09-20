@@ -711,3 +711,50 @@ update public.categories set preview_images = array['assets/products/skincare-01
 update public.categories c set preview_images = coalesce((select array_agg(p.image_url order by p.sort) from (select image_url, sort from public.products where category = c.key and active order by sort limit 3) p), '{}')
   where c.key <> 'skincare' and cardinality(c.preview_images) = 0;
 notify pgrst, 'reload schema';
+
+-- v3.2 (20 Sep 2026): prices (list price from the source, stored as USD per Karam's instruction)
+alter table public.products add column if not exists price numeric(10,2);
+alter table public.products add column if not exists currency text not null default 'USD';
+revoke select on public.products from anon;
+grant select (id, sku, category, sub_en, sub_ar, brand, name_en, name_ar, desc_en, desc_ar, image_url, image2_url, concerns, ingredients, price, currency, active, sort, created_at) on public.products to anon;
+notify pgrst, 'reload schema';
+
+-- v3.3: price in product stats
+drop function if exists public.admin_product_stats(boolean, text, text);
+create or replace function public.admin_product_stats(
+  p_exclude_test boolean default true, p_residence text default null, p_age_band text default null)
+returns table (
+  id int, sku text, category text, sub_en text, brand text, price numeric, name_en text, name_ar text, image_url text, source_url text, active boolean,
+  reach bigint, favorites bigint, clicks bigint, passes bigint, top_picks bigint, fav_rate numeric, click_rate numeric, score numeric)
+language plpgsql security definer set search_path = public as $$
+begin
+  perform public.assert_admin();
+  return query
+  with vis as (
+    select v.id from public.visitors v
+    where not (p_exclude_test and v.is_test)
+      and (p_residence is null or v.residence = p_residence)
+      and (p_age_band is null or v.age_band = p_age_band)
+  ),
+  imp as (select i.product_id, count(*) n from public.impressions i join vis on vis.id = i.visitor_id group by 1),
+  fav as (select f.product_id, count(*) n from public.favorites f join vis on vis.id = f.visitor_id group by 1),
+  clk as (select e.product_id, count(*) n from public.events e join vis on vis.id = e.visitor_id where e.type = 'click' group by 1),
+  pas as (select e.product_id, count(distinct e.visitor_id) n from public.events e join vis on vis.id = e.visitor_id where e.type = 'pass' group by 1),
+  tp  as (select t.product_id, count(*) n from public.top_picks t join vis on vis.id = t.visitor_id group by 1)
+  select p.id, p.sku, p.category, p.sub_en, p.brand, p.price, p.name_en, p.name_ar, p.image_url, p.source_url, p.active,
+    coalesce(imp.n, 0), coalesce(fav.n, 0), coalesce(clk.n, 0), coalesce(pas.n, 0), coalesce(tp.n, 0),
+    case when coalesce(imp.n, 0) > 0 then round(100.0 * coalesce(fav.n, 0) / imp.n, 1) else 0 end,
+    case when coalesce(imp.n, 0) > 0 then round(100.0 * coalesce(clk.n, 0) / imp.n, 1) else 0 end,
+    case when coalesce(imp.n, 0) > 0
+         then round(100.0 * (coalesce(fav.n, 0) + 2 * coalesce(tp.n, 0)) / (imp.n + 5), 1) else 0 end
+  from public.products p
+  left join imp on imp.product_id = p.id
+  left join fav on fav.product_id = p.id
+  left join clk on clk.product_id = p.id
+  left join pas on pas.product_id = p.id
+  left join tp  on tp.product_id = p.id
+  order by 19 desc, 13 desc, p.id;
+end $$;
+revoke execute on function public.admin_product_stats(boolean, text, text) from public, anon;
+grant execute on function public.admin_product_stats(boolean, text, text) to authenticated;
+notify pgrst, 'reload schema';

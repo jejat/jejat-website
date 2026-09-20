@@ -114,6 +114,7 @@
   const pName = (p) => S.lang === 'ar' ? p.name_ar : p.name_en;
   const pSub = (p) => S.lang === 'ar' ? p.sub_ar : p.sub_en;
   const catOf = (p) => S.cats.find(c => c.key === p.category) || { key: p.category, name_ar: p.category, name_en: p.category, emoji: '' };
+  const money = (p) => p.price == null ? '' : (p.currency === 'USD' || !p.currency ? '$' : p.currency + ' ') + Number(p.price).toFixed(2).replace(/\.00$/, '');
   const imgUrl = (p) => /^https?:/.test(p.image_url) ? p.image_url : SITE_ROOT + p.image_url;
   const store = {
     get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } },
@@ -274,7 +275,7 @@
     card.innerHTML = `
       <button class="ph" aria-label="${pName(p)}"><img alt="" loading="lazy" decoding="async" width="800" height="800"></button>
       <button class="heart${S.favorites.has(p.id) ? ' on' : ''}" aria-label="favorite">${HEART}</button>
-      <div class="body">${p.brand ? `<p class="brand">${p.brand}</p>` : ''}<p class="name">${pName(p)}</p><span class="cat">${pSub(p) || `${c.emoji || ''} ${catName(c)}`.trim()}</span></div>`;
+      <div class="body">${p.brand ? `<p class="brand">${p.brand}</p>` : ''}<p class="name">${pName(p)}</p><div class="row"><span class="cat">${pSub(p) || `${c.emoji || ''} ${catName(c)}`.trim()}</span>${p.price != null ? `<span class="price">${money(p)}</span>` : ''}</div></div>`;
     const img = card.querySelector('img'); const ph = card.querySelector('.ph');
     img.onload = () => { img.classList.add('ok'); ph.classList.add('loaded'); }; img.onerror = () => ph.classList.add('loaded');
     img.src = imgUrl(p);
@@ -317,7 +318,7 @@
     $('quick').querySelector('.qbtns').hidden = false; $('quick').querySelector('.qhint').hidden = false;
     const mk = (p, under) => {
       const el = document.createElement('div'); el.className = 'qcard' + (under ? ' under' : ''); el.dataset.id = p.id;
-      el.innerHTML = `<span class="stamp love">${t('quick_love')} ♥</span><span class="stamp pass">${t('quick_pass')} ✕</span><img src="${imgUrl(p)}" alt="" draggable="false"><div class="qbody">${p.brand ? `<div class="qbrand">${p.brand}</div>` : ''}<div class="qname">${pName(p)}</div><div class="qsub">${pSub(p) || (S.lang === 'ar' ? p.name_en : p.name_ar)}</div></div>`;
+      el.innerHTML = `<span class="stamp love">${t('quick_love')} ♥</span><span class="stamp pass">${t('quick_pass')} ✕</span><img src="${imgUrl(p)}" alt="" draggable="false"><div class="qbody">${p.brand ? `<div class="qbrand">${p.brand}</div>` : ''}<div class="qname">${pName(p)}</div><div class="qsub">${pSub(p) || (S.lang === 'ar' ? p.name_en : p.name_ar)}${p.price != null ? ` · <b class="qprice">${money(p)}</b>` : ''}</div></div>`;
       return el;
     };
     if (q.list[q.i + 1]) stack.appendChild(mk(q.list[q.i + 1], true));
@@ -453,6 +454,7 @@
     const p = S.sheetList[S.sheetIdx]; if (!p) return; const c = catOf(p);
     S.sheetImg = 0; setSheetImg(p); $('sheetName').textContent = pName(p);
     $('sheetBrand').textContent = p.brand || ''; $('sheetBrand').hidden = !p.brand;
+    $('sheetPrice').textContent = money(p); $('sheetPrice').hidden = p.price == null;
     const alt = S.lang === 'ar' ? p.name_en : p.name_ar; $('sheetSub').textContent = alt !== pName(p) ? alt : ''; $('sheetSub').hidden = alt === pName(p);
     const desc = S.lang === 'ar' ? (p.desc_ar || p.desc_en) : (p.desc_en || p.desc_ar); $('sheetDesc').textContent = desc || ''; $('sheetDesc').hidden = !desc;
     const tags = (p.concerns || []).map(k => `<span class="tg c">${tag(k)}</span>`).concat((p.ingredients || []).map(k => `<span class="tg i">${tag(k)}</span>`));
@@ -545,7 +547,7 @@
     try {
       const [cats, products, visit] = await Promise.all([
         rest('categories?select=key,name_en,name_ar,emoji,sort,preview_images&order=sort'),
-        rest('products?select=id,sku,category,sub_en,sub_ar,brand,name_en,name_ar,desc_en,desc_ar,image_url,image2_url,concerns,ingredients,sort&active=eq.true&order=sort'),
+        rest('products?select=id,sku,category,sub_en,sub_ar,brand,name_en,name_ar,desc_en,desc_ar,image_url,image2_url,concerns,ingredients,price,currency,sort&active=eq.true&order=sort'),
         startVisit().catch(async e => { console.warn('retry start_visit', e); await new Promise(r => setTimeout(r, 1500)); return startVisit(); })
       ]);
       S.cats = cats.filter(c => products.some(p => p.category === c.key));
