@@ -704,3 +704,10 @@ end $$;
 revoke execute on function public.admin_product_stats(boolean, text, text) from public, anon;
 grant execute on function public.admin_product_stats(boolean, text, text) to authenticated;
 notify pgrst, 'reload schema';
+
+-- v3.1 (20 Sep 2026): fixed preview photos per category tile (independent of products)
+alter table public.categories add column if not exists preview_images text[] not null default '{}';
+update public.categories set preview_images = array['assets/products/skincare-01.webp','assets/products/skincare-06.webp','assets/products/skincare-02.webp'] where key = 'skincare';
+update public.categories c set preview_images = coalesce((select array_agg(p.image_url order by p.sort) from (select image_url, sort from public.products where category = c.key and active order by sort limit 3) p), '{}')
+  where c.key <> 'skincare' and cardinality(c.preview_images) = 0;
+notify pgrst, 'reload schema';

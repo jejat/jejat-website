@@ -198,7 +198,8 @@
     S.cats.forEach((c, idx) => {
       const st = catStats(c.key); const list = S.byCat.get(c.key) || [];
       if (!st.done && !st.off) allDone = false;
-      const pics = list.slice(0, 3).map(p => `<img src="${imgUrl(p)}" alt="" loading="lazy">`).join('');
+      const previews = (c.preview_images && c.preview_images.length) ? c.preview_images : list.slice(0, 3).map(p => p.image_url);
+      const pics = previews.slice(0, 3).map(u => `<img src="${/^https?:/.test(u) ? u : SITE_ROOT + u}" alt="" loading="lazy">`).join('');
       const tile = document.createElement('button');
       tile.className = 'tile' + (st.done ? ' done' : '') + (st.off ? ' off' : '');
       tile.style.setProperty('--tint', `var(--tint-${c.key}, var(--cream))`);
@@ -543,7 +544,7 @@
     const startVisit = () => rpc('start_visit', { p_visitor: S.vid, p_referred_by: S.ref, p_lang: S.lang, p_device: deviceType(), p_ua: navigator.userAgent, p_referrer: document.referrer || null, p_screen: `${screen.width}x${screen.height}`, p_is_test: S.isTest });
     try {
       const [cats, products, visit] = await Promise.all([
-        rest('categories?select=key,name_en,name_ar,emoji,sort&order=sort'),
+        rest('categories?select=key,name_en,name_ar,emoji,sort,preview_images&order=sort'),
         rest('products?select=id,sku,category,sub_en,sub_ar,brand,name_en,name_ar,desc_en,desc_ar,image_url,image2_url,concerns,ingredients,sort&active=eq.true&order=sort'),
         startVisit().catch(async e => { console.warn('retry start_visit', e); await new Promise(r => setTimeout(r, 1500)); return startVisit(); })
       ]);
