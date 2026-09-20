@@ -758,3 +758,9 @@ end $$;
 revoke execute on function public.admin_product_stats(boolean, text, text) from public, anon;
 grant execute on function public.admin_product_stats(boolean, text, text) to authenticated;
 notify pgrst, 'reload schema';
+
+-- v3.4 (20 Sep 2026): colour variants (merged Zalando articles) as jsonb on the product
+alter table public.products add column if not exists variants jsonb not null default '[]';
+revoke select on public.products from anon;
+grant select (id, sku, category, sub_en, sub_ar, brand, name_en, name_ar, desc_en, desc_ar, image_url, image2_url, concerns, ingredients, price, currency, variants, active, sort, created_at) on public.products to anon;
+notify pgrst, 'reload schema';

@@ -449,27 +449,37 @@
   }
 
   // ---------- sheet ----------
-  function openSheet(p, list) { S.sheetList = list; S.sheetIdx = list.indexOf(p); S.sheetImg = 0; fillSheet(); $('sheetBg').classList.add('on'); $('sheet').classList.add('on'); document.body.classList.add('locked'); track('click', p.id, p.category); markSeen(p.id); }
+  function openSheet(p, list) { S.sheetList = list; S.sheetIdx = list.indexOf(p); S.sheetImg = 0; S.sheetVar = -1; fillSheet(); $('sheetBg').classList.add('on'); $('sheet').classList.add('on'); document.body.classList.add('locked'); track('click', p.id, p.category); markSeen(p.id); }
   function fillSheet() {
     const p = S.sheetList[S.sheetIdx]; if (!p) return; const c = catOf(p);
-    S.sheetImg = 0; setSheetImg(p); $('sheetName').textContent = pName(p);
+    S.sheetImg = 0; S.sheetVar = (p.variants && p.variants.length > 1) ? 0 : -1; setSheetImg(p); renderSwatches(p); $('sheetName').textContent = pName(p);
     $('sheetBrand').textContent = p.brand || ''; $('sheetBrand').hidden = !p.brand;
     $('sheetPrice').textContent = money(p); $('sheetPrice').hidden = p.price == null;
     const alt = S.lang === 'ar' ? p.name_en : p.name_ar; $('sheetSub').textContent = alt !== pName(p) ? alt : ''; $('sheetSub').hidden = alt === pName(p);
     const desc = S.lang === 'ar' ? (p.desc_ar || p.desc_en) : (p.desc_en || p.desc_ar); $('sheetDesc').textContent = desc || ''; $('sheetDesc').hidden = !desc;
     const tags = (p.concerns || []).map(k => `<span class="tg c">${tag(k)}</span>`).concat((p.ingredients || []).map(k => `<span class="tg i">${tag(k)}</span>`));
     $('sheetTags').innerHTML = tags.join(''); $('sheetTags').hidden = !tags.length;
-    $('sheetDots').hidden = !p.image2_url; $('sheetDots').innerHTML = p.image2_url ? '<i class="on"></i><i></i>' : '';
+    
     $('sheetCat').textContent = `${c.emoji || ''} ${catName(c)}${pSub(p) ? ' · ' + pSub(p) : ''}`.trim();
     $('sheetCat').style.setProperty('--tint', `var(--tint-${p.category}, var(--cream))`);
     $('sheetPrev').hidden = S.sheetIdx <= 0; $('sheetNext').hidden = S.sheetIdx >= S.sheetList.length - 1;
     fillSheetHeart();
   }
+  function sheetImages(p) {
+    if (S.sheetVar >= 0 && p.variants && p.variants[S.sheetVar] && p.variants[S.sheetVar].images && p.variants[S.sheetVar].images.length) return p.variants[S.sheetVar].images;
+    return [p.image_url, p.image2_url].filter(Boolean);
+  }
   function setSheetImg(p) {
-    const imgs = [p.image_url, p.image2_url].filter(Boolean);
+    const imgs = sheetImages(p); if (!imgs.length) return;
     const u = imgs[S.sheetImg % imgs.length];
     $('sheetImg').src = /^https?:/.test(u) ? u : SITE_ROOT + u; $('sheetImg').alt = pName(p);
-    $('sheetDots').querySelectorAll('i').forEach((d, i) => d.classList.toggle('on', i === S.sheetImg % imgs.length));
+    $('sheetDots').hidden = imgs.length < 2; $('sheetDots').innerHTML = imgs.map((_, i) => `<i class="${i === S.sheetImg % imgs.length ? 'on' : ''}"></i>`).join('');
+  }
+  function renderSwatches(p) {
+    const box = $('sheetColours'); const vs = (p.variants || []).filter(v => v.images && v.images.length);
+    box.hidden = vs.length < 2; if (vs.length < 2) { box.innerHTML = ''; return; }
+    box.innerHTML = vs.map((v, i) => `<button class="sw ${i === S.sheetVar ? 'on' : ''}" data-i="${i}" title="${S.lang === 'ar' ? v.colour_ar : v.colour_en}"><img src="${/^https?:/.test(v.images[0]) ? v.images[0] : SITE_ROOT + v.images[0]}" alt=""><span>${S.lang === 'ar' ? v.colour_ar : v.colour_en}</span></button>`).join('');
+    box.querySelectorAll('.sw').forEach(b => b.onclick = () => { S.sheetVar = +b.dataset.i; S.sheetImg = 0; setSheetImg(p); box.querySelectorAll('.sw').forEach(x => x.classList.toggle('on', x === b)); const v = vs[S.sheetVar]; if (v.price != null) $('sheetPrice').textContent = money({ price: v.price, currency: p.currency }); track('click', p.id, p.category, { via: 'colour', colour: v.colour_en }); });
   }
   function fillSheetHeart() { const p = S.sheetList[S.sheetIdx]; if (!p) return; const on = S.favorites.has(p.id); $('sheetHeart').classList.toggle('on', on); $('sheetHeartLabel').textContent = on ? t('remove_fav') : t('add_fav'); }
   function closeSheet() { $('sheetBg').classList.remove('on'); $('sheet').classList.remove('on'); if ($('welcome').classList.contains('off')) document.body.classList.remove('locked'); S.sheetIdx = -1; }
@@ -533,7 +543,7 @@
     $('topStart').onclick = startPicking; $('topBtn').onclick = startPicking; $('pickCancel').onclick = stopPicking; $('pickSave').onclick = savePicks;
     $('sheetBg').onclick = closeSheet; $('sheetClose').onclick = closeSheet; $('sheetPrev').onclick = () => sheetStep(-1); $('sheetNext').onclick = () => sheetStep(1);
     $('sheetHeart').onclick = () => { const p = S.sheetList[S.sheetIdx]; if (p) toggleFav(p, null); };
-    $('sheetImg').onclick = () => { const p = S.sheetList[S.sheetIdx]; if (p && p.image2_url) { S.sheetImg = (S.sheetImg + 1) % 2; setSheetImg(p); track('click', p.id, p.category, { via: 'image2' }); } };
+    $('sheetImg').onclick = () => { const p = S.sheetList[S.sheetIdx]; if (!p) return; const n = sheetImages(p).length; if (n > 1) { S.sheetImg = (S.sheetImg + 1) % n; setSheetImg(p); track('click', p.id, p.category, { via: 'image' + (S.sheetImg + 1) }); } };
     $('sheetDots').onclick = (e) => { const p = S.sheetList[S.sheetIdx]; const i = [...$('sheetDots').children].indexOf(e.target); if (p && i >= 0) { S.sheetImg = i; setSheetImg(p); } };
     addEventListener('keydown', e => {
       if (S.sheetIdx >= 0) { if (e.key === 'Escape') closeSheet(); const rtl = S.lang === 'ar'; if (e.key === 'ArrowLeft') sheetStep(rtl ? 1 : -1); if (e.key === 'ArrowRight') sheetStep(rtl ? -1 : 1); return; }
@@ -547,7 +557,7 @@
     try {
       const [cats, products, visit] = await Promise.all([
         rest('categories?select=key,name_en,name_ar,emoji,sort,preview_images&order=sort'),
-        rest('products?select=id,sku,category,sub_en,sub_ar,brand,name_en,name_ar,desc_en,desc_ar,image_url,image2_url,concerns,ingredients,price,currency,sort&active=eq.true&order=sort'),
+        rest('products?select=id,sku,category,sub_en,sub_ar,brand,name_en,name_ar,desc_en,desc_ar,image_url,image2_url,concerns,ingredients,price,currency,variants,sort&active=eq.true&order=sort'),
         startVisit().catch(async e => { console.warn('retry start_visit', e); await new Promise(r => setTimeout(r, 1500)); return startVisit(); })
       ]);
       S.cats = cats.filter(c => products.some(p => p.category === c.key));

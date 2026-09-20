@@ -532,3 +532,12 @@ html[dir="rtl"] .qcard.fly-pass { transform: translate(120vw, -10vh) rotate(18de
 .sheet-body .titlerow { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .sheet-body .titlerow .price { font-family: var(--display); font-weight: 800; font-size: 1.3rem; color: var(--orange-deep); direction: ltr; white-space: nowrap; }
 .qcard .qprice { color: var(--ink); direction: ltr; unicode-bidi: isolate; }
+
+/* ---- v5: colour swatches in the sheet ---- */
+.sheet-body .colours { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 2px 0; }
+.sheet-body .colours::-webkit-scrollbar { display: none; }
+.sheet-body .sw { flex: 0 0 auto; display: grid; justify-items: center; gap: 3px; width: 58px; padding: 0; }
+.sheet-body .sw img { width: 50px; height: 50px; border-radius: 14px; object-fit: cover; background: var(--cream); border: 2px solid transparent; transition: border-color .15s, transform .15s var(--ease-pop); }
+.sheet-body .sw span { font-size: .66rem; font-weight: 700; color: var(--ink-soft); max-width: 58px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sheet-body .sw.on img { border-color: var(--orange); transform: scale(1.06); }
+.sheet-body .sw.on span { color: var(--orange-deep); }
