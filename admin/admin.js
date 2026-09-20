@@ -126,7 +126,10 @@
   }
   function renderProducts() {
     const q = $('fSearch').value.trim().toLowerCase(), cat = $('fCat').value;
-    let rows = S.products.filter(p => (!cat || p.category === cat) && (!q || (p.name_en + ' ' + p.name_ar + ' ' + p.sku).toLowerCase().includes(q)));
+    const brand = $('fBrand').value;
+    let rows = S.products.filter(p => (!cat || p.category === cat) && (!brand || p.brand === brand) && (!q || (p.name_en + ' ' + p.name_ar + ' ' + p.sku + ' ' + (p.brand || '')).toLowerCase().includes(q)));
+    const brands = [...new Set(S.products.map(p => p.brand).filter(Boolean))].sort();
+    if ($('fBrand').options.length !== brands.length + 1) $('fBrand').innerHTML = '<option value="">All brands</option>' + brands.map(b => `<option value="${esc(b)}" ${b === brand ? 'selected' : ''}>${esc(b)}</option>`).join('');
     rows = sortRows(rows, S.sort.products);
     $('prCount').textContent = `${rows.length} products`;
     $('prMeta').textContent = S.excl ? 'test visitors hidden' : 'including test visitors';
@@ -134,7 +137,9 @@
     table($('prTable'), [
       { key: '_rank', label: '#', cell: (r, i) => `<span class="rank ${i < 3 && S.sort.products[0] === 'score' ? 'top' : ''}">${i + 1}</span>` },
       { key: 'name_en', label: 'Product', cell: r => `<div style="display:flex;gap:10px;align-items:center"><img class="thumb" src="${img(r.image_url)}" alt="" loading="lazy"><div><div class="name">${esc(r.name_en)}</div><div class="sub">${esc(r.name_ar)}</div></div></div>` },
-      { key: 'category', label: 'Category', cell: r => `<span class="tag">${esc(catName(r.category))}</span>` },
+      { key: 'brand', label: 'Brand', cell: r => r.brand ? `<b style="font-size:.78rem">${esc(r.brand)}</b>` : '<span class="muted">–</span>' },
+      { key: 'category', label: 'Category', cell: r => `<span class="tag">${esc(catName(r.category))}</span>${r.sub_en ? ` <span class="muted" style="font-size:.74rem">${esc(r.sub_en)}</span>` : ''}` },
+      { key: 'active', label: 'Live', cell: r => `<button class="btn sm ${r.active ? 'ghost' : ''}" data-toggle="${r.id}" title="${r.active ? 'Hide from visitors' : 'Show to visitors'}">${r.active ? 'On' : 'Off'}</button>` },
       { key: 'reach', label: 'Seen by', cell: r => `<div class="bar-cell"><span class="trk"><span class="fil" style="width:${100 * r.reach / maxReach}%"></span></span><span class="num">${fmt(r.reach)}</span></div>` },
       { key: 'favorites', label: 'Favorites', r: true, cell: r => `<b>${fmt(r.favorites)}</b>` },
       { key: 'fav_rate', label: 'Fav rate', cell: r => `<div class="bar-cell"><span class="trk"><span class="fil heart" style="width:${Math.min(100, r.fav_rate)}%"></span></span><span class="num">${fmt(r.fav_rate, 1)}%</span></div>` },
@@ -143,7 +148,8 @@
       { key: 'top_picks', label: 'Top 25', r: true, cell: r => fmt(r.top_picks) },
       { key: 'score', label: 'Score', r: true, cell: r => `<b>${fmt(r.score, 1)}</b>` },
     ], rows, S.sort.products);
-    $('prTable').onresort = null; $('prTable').addEventListener('resort', renderProducts, { once: true });
+    $('prTable').addEventListener('resort', renderProducts, { once: true });
+    $('prTable').querySelectorAll('[data-toggle]').forEach(b => b.onclick = async (e) => { e.stopPropagation(); const id = +b.dataset.toggle; const p = S.products.find(x => x.id === id); await rest(`products?id=eq.${id}`, { method: 'PATCH', body: JSON.stringify({ active: !p.active }) }); p.active = !p.active; toast(p.active ? 'Product is live' : 'Product hidden from visitors'); renderProducts(); });
   }
 
   // ---------- visitors ----------
@@ -254,9 +260,9 @@
   $('ovRefresh').onclick = () => show('overview');
   ['fRes', 'fAge'].forEach(id => $(id).onchange = loadProducts);
   ['fCat'].forEach(id => $(id).onchange = renderProducts);
-  $('fSearch').oninput = renderProducts;
+  $('fSearch').oninput = renderProducts; $('fBrand').onchange = renderProducts;
   $('vFilter').onchange = renderVisitors; $('vSearch').oninput = renderVisitors;
-  $('prCsv').onclick = () => csv(sortRows(S.products, S.sort.products), [['rank', (r) => S.products.indexOf(r) + 1], ['sku', 'sku'], ['name_en', 'name_en'], ['name_ar', 'name_ar'], ['category', 'category'], ['seen_by', 'reach'], ['favorites', 'favorites'], ['fav_rate_pct', 'fav_rate'], ['opened', 'clicks'], ['passed', 'passes'], ['top25_picks', 'top_picks'], ['score', 'score'], ['supplier_link', 'source_url']], `jejat-products-${new Date().toISOString().slice(0, 10)}.csv`);
+  $('prCsv').onclick = () => csv(sortRows(S.products, S.sort.products), [['rank', (r) => S.products.indexOf(r) + 1], ['sku', 'sku'], ['brand', 'brand'], ['name_en', 'name_en'], ['step', 'sub_en'], ['live', 'active'], ['name_ar', 'name_ar'], ['category', 'category'], ['seen_by', 'reach'], ['favorites', 'favorites'], ['fav_rate_pct', 'fav_rate'], ['opened', 'clicks'], ['passed', 'passes'], ['top25_picks', 'top_picks'], ['score', 'score'], ['supplier_link', 'source_url']], `jejat-products-${new Date().toISOString().slice(0, 10)}.csv`);
   $('viCsv').onclick = () => csv(S.visitors, [['first_name', 'first_name'], ['last_name', 'last_name'], ['email', 'email'], ['phone', 'phone'], ['residence', 'residence'], ['age', 'age_band'], ['country', 'country'], ['registered_at', 'registered_at'], ['last_seen_at', 'last_seen_at'], ['visits', 'sessions'], ['minutes', 'minutes'], ['seen', 'seen'], ['opened', 'clicks'], ['favorites', 'favorites'], ['top25', 'top_picks'], ['invite_code', 'referral_code'], ['invited_by', 'referred_by_name'], ['is_test', 'is_test']], `jejat-visitors-${new Date().toISOString().slice(0, 10)}.csv`);
   $('drawerBg').onclick = closeDrawer;
   addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });

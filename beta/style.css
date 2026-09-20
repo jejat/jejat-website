@@ -507,3 +507,20 @@ html[dir="rtl"] .qcard.fly-pass { transform: translate(120vw, -10vh) rotate(18de
 .qbtn.love { width: 68px; height: 68px; background: var(--heart); color: #fff; box-shadow: 0 12px 28px rgba(232,68,107,.4); }
 .qbtn.love svg { width: 30px; height: 30px; fill: #fff; }
 .qhint { margin: 0; font-size: .8rem; color: var(--ink-faint); font-weight: 700; text-align: center; }
+
+/* ---- v3: brands, descriptions, tags, sheet gallery ---- */
+.card .brand { margin: 0 0 1px; font-size: .68rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); direction: ltr; text-align: start; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card .name { unicode-bidi: plaintext; }
+.qcard .qbrand { font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); direction: ltr; text-align: start; }
+.qcard .qname { unicode-bidi: plaintext; }
+.sheet-body .brand { margin: 0; font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--orange-deep); direction: ltr; text-align: start; }
+.sheet-body h2 { unicode-bidi: plaintext; }
+.sheet-body .desc { margin: 2px 0 0; color: var(--ink); font-size: .95rem; line-height: 1.6; }
+.sheet-body .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.sheet-body .tg { font-size: .74rem; font-weight: 800; padding: 3px 9px; border-radius: 999px; background: var(--cream); color: var(--ink-soft); }
+.sheet-body .tg.i { background: #E3F0EA; color: #1F6B57; }
+.sheet-img { cursor: pointer; }
+.sheet-img .dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 2; }
+.sheet-img .dots i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.7); box-shadow: 0 1px 3px rgba(0,0,0,.25); cursor: pointer; transition: transform .2s, background .2s; }
+.sheet-img .dots i.on { background: var(--orange); transform: scale(1.25); }
+@media (min-width: 700px) { .sheet { max-height: 88vh; } .sheet-body { overflow: auto; } }

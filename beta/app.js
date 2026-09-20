@@ -86,6 +86,13 @@
       offline: 'No connection… we will save your picks when it is back',
     }
   };
+  const TAGS = {
+    en: { dehydration: 'Dehydration', dryness: 'Dryness', acne: 'Acne & blackheads', pores: 'Pores', oily: 'Oily skin', pigmentation: 'Dark spots', wrinkles: 'Wrinkles & firmness', sensitivity: 'Sensitivity & redness', glow: 'Glow', dark_circles: 'Dark circles',
+          hyaluronic: 'Hyaluronic acid', aha: 'AHA / PHA', bha: 'BHA', retinol: 'Retinol', centella: 'Centella', ceramide: 'Ceramides', niacinamide: 'Niacinamide', peptide: 'Peptides', vitamin_c: 'Vitamin C', pdrn: 'PDRN', collagen: 'Collagen' },
+    ar: { dehydration: 'جفاف داخلي', dryness: 'بشرة جافة', acne: 'حبوب ورؤوس سوداء', pores: 'مسام واسعة', oily: 'بشرة دهنية', pigmentation: 'بقع داكنة', wrinkles: 'تجاعيد وشدّ', sensitivity: 'حساسية واحمرار', glow: 'إشراق', dark_circles: 'هالات سوداء',
+          hyaluronic: 'هيالورونيك', aha: 'AHA / PHA', bha: 'BHA', retinol: 'ريتينول', centella: 'سنتيلا', ceramide: 'سيراميد', niacinamide: 'نياسيناميد', peptide: 'ببتيد', vitamin_c: 'فيتامين C', pdrn: 'PDRN', collagen: 'كولاجين' }
+  };
+  const tag = (k) => TAGS[S.lang][k] || TAGS.en[k] || k;
   const RES = ['aleppo', 'damascus', 'syria_other', 'abroad'];
   const AGE = ['18_24', '25_34', '35_44', '45_plus'];
 
@@ -244,7 +251,7 @@
   }
   function renderSubChips() {
     const box = $('subChips'); box.innerHTML = '';
-    const all = S.byCat.get(S.cat) || [];
+    const all = S.products.filter(p => p.category === S.cat); // catalog order, so chips follow the routine order
     const subs = []; all.forEach(p => { if (p.sub_en && !subs.some(s => s.en === p.sub_en)) subs.push({ en: p.sub_en, ar: p.sub_ar || p.sub_en }); });
     if (subs.length < 2) return;
     const mk = (key, label) => { const b = document.createElement('button'); b.className = 'chip' + (S.sub === key ? ' on' : ''); b.textContent = label; b.onclick = () => { S.sub = key; box.querySelectorAll('.chip').forEach(x => x.classList.toggle('on', x === b)); track('subcategory', null, S.cat, { sub: key || 'all' }); if (S.mode === 'grid') renderGrid(); else startQuick(); }; box.appendChild(b); };
@@ -266,7 +273,7 @@
     card.innerHTML = `
       <button class="ph" aria-label="${pName(p)}"><img alt="" loading="lazy" decoding="async" width="800" height="800"></button>
       <button class="heart${S.favorites.has(p.id) ? ' on' : ''}" aria-label="favorite">${HEART}</button>
-      <div class="body"><p class="name">${pName(p)}</p><span class="cat">${pSub(p) || `${c.emoji || ''} ${catName(c)}`.trim()}</span></div>`;
+      <div class="body">${p.brand ? `<p class="brand">${p.brand}</p>` : ''}<p class="name">${pName(p)}</p><span class="cat">${pSub(p) || `${c.emoji || ''} ${catName(c)}`.trim()}</span></div>`;
     const img = card.querySelector('img'); const ph = card.querySelector('.ph');
     img.onload = () => { img.classList.add('ok'); ph.classList.add('loaded'); }; img.onerror = () => ph.classList.add('loaded');
     img.src = imgUrl(p);
@@ -309,7 +316,7 @@
     $('quick').querySelector('.qbtns').hidden = false; $('quick').querySelector('.qhint').hidden = false;
     const mk = (p, under) => {
       const el = document.createElement('div'); el.className = 'qcard' + (under ? ' under' : ''); el.dataset.id = p.id;
-      el.innerHTML = `<span class="stamp love">${t('quick_love')} ♥</span><span class="stamp pass">${t('quick_pass')} ✕</span><img src="${imgUrl(p)}" alt="" draggable="false"><div class="qbody"><div class="qname">${pName(p)}</div><div class="qsub">${pSub(p) || (S.lang === 'ar' ? p.name_en : p.name_ar)}</div></div>`;
+      el.innerHTML = `<span class="stamp love">${t('quick_love')} ♥</span><span class="stamp pass">${t('quick_pass')} ✕</span><img src="${imgUrl(p)}" alt="" draggable="false"><div class="qbody">${p.brand ? `<div class="qbrand">${p.brand}</div>` : ''}<div class="qname">${pName(p)}</div><div class="qsub">${pSub(p) || (S.lang === 'ar' ? p.name_en : p.name_ar)}</div></div>`;
       return el;
     };
     if (q.list[q.i + 1]) stack.appendChild(mk(q.list[q.i + 1], true));
@@ -440,15 +447,26 @@
   }
 
   // ---------- sheet ----------
-  function openSheet(p, list) { S.sheetList = list; S.sheetIdx = list.indexOf(p); fillSheet(); $('sheetBg').classList.add('on'); $('sheet').classList.add('on'); document.body.classList.add('locked'); track('click', p.id, p.category); markSeen(p.id); }
+  function openSheet(p, list) { S.sheetList = list; S.sheetIdx = list.indexOf(p); S.sheetImg = 0; fillSheet(); $('sheetBg').classList.add('on'); $('sheet').classList.add('on'); document.body.classList.add('locked'); track('click', p.id, p.category); markSeen(p.id); }
   function fillSheet() {
     const p = S.sheetList[S.sheetIdx]; if (!p) return; const c = catOf(p);
-    $('sheetImg').src = imgUrl(p); $('sheetImg').alt = pName(p); $('sheetName').textContent = pName(p);
-    $('sheetSub').textContent = S.lang === 'ar' ? p.name_en : p.name_ar;
+    S.sheetImg = 0; setSheetImg(p); $('sheetName').textContent = pName(p);
+    $('sheetBrand').textContent = p.brand || ''; $('sheetBrand').hidden = !p.brand;
+    const alt = S.lang === 'ar' ? p.name_en : p.name_ar; $('sheetSub').textContent = alt !== pName(p) ? alt : ''; $('sheetSub').hidden = alt === pName(p);
+    const desc = S.lang === 'ar' ? (p.desc_ar || p.desc_en) : (p.desc_en || p.desc_ar); $('sheetDesc').textContent = desc || ''; $('sheetDesc').hidden = !desc;
+    const tags = (p.concerns || []).map(k => `<span class="tg c">${tag(k)}</span>`).concat((p.ingredients || []).map(k => `<span class="tg i">${tag(k)}</span>`));
+    $('sheetTags').innerHTML = tags.join(''); $('sheetTags').hidden = !tags.length;
+    $('sheetDots').hidden = !p.image2_url; $('sheetDots').innerHTML = p.image2_url ? '<i class="on"></i><i></i>' : '';
     $('sheetCat').textContent = `${c.emoji || ''} ${catName(c)}${pSub(p) ? ' · ' + pSub(p) : ''}`.trim();
     $('sheetCat').style.setProperty('--tint', `var(--tint-${p.category}, var(--cream))`);
     $('sheetPrev').hidden = S.sheetIdx <= 0; $('sheetNext').hidden = S.sheetIdx >= S.sheetList.length - 1;
     fillSheetHeart();
+  }
+  function setSheetImg(p) {
+    const imgs = [p.image_url, p.image2_url].filter(Boolean);
+    const u = imgs[S.sheetImg % imgs.length];
+    $('sheetImg').src = /^https?:/.test(u) ? u : SITE_ROOT + u; $('sheetImg').alt = pName(p);
+    $('sheetDots').querySelectorAll('i').forEach((d, i) => d.classList.toggle('on', i === S.sheetImg % imgs.length));
   }
   function fillSheetHeart() { const p = S.sheetList[S.sheetIdx]; if (!p) return; const on = S.favorites.has(p.id); $('sheetHeart').classList.toggle('on', on); $('sheetHeartLabel').textContent = on ? t('remove_fav') : t('add_fav'); }
   function closeSheet() { $('sheetBg').classList.remove('on'); $('sheet').classList.remove('on'); if ($('welcome').classList.contains('off')) document.body.classList.remove('locked'); S.sheetIdx = -1; }
@@ -512,6 +530,8 @@
     $('topStart').onclick = startPicking; $('topBtn').onclick = startPicking; $('pickCancel').onclick = stopPicking; $('pickSave').onclick = savePicks;
     $('sheetBg').onclick = closeSheet; $('sheetClose').onclick = closeSheet; $('sheetPrev').onclick = () => sheetStep(-1); $('sheetNext').onclick = () => sheetStep(1);
     $('sheetHeart').onclick = () => { const p = S.sheetList[S.sheetIdx]; if (p) toggleFav(p, null); };
+    $('sheetImg').onclick = () => { const p = S.sheetList[S.sheetIdx]; if (p && p.image2_url) { S.sheetImg = (S.sheetImg + 1) % 2; setSheetImg(p); track('click', p.id, p.category, { via: 'image2' }); } };
+    $('sheetDots').onclick = (e) => { const p = S.sheetList[S.sheetIdx]; const i = [...$('sheetDots').children].indexOf(e.target); if (p && i >= 0) { S.sheetImg = i; setSheetImg(p); } };
     addEventListener('keydown', e => {
       if (S.sheetIdx >= 0) { if (e.key === 'Escape') closeSheet(); const rtl = S.lang === 'ar'; if (e.key === 'ArrowLeft') sheetStep(rtl ? 1 : -1); if (e.key === 'ArrowRight') sheetStep(rtl ? -1 : 1); return; }
       if (S.view === 'cat' && S.mode === 'quick') { const p = S.quick.list[S.quick.i]; if (!p) return; const rtl = S.lang === 'ar'; if (e.key === 'ArrowRight') decide(p, null, !rtl); if (e.key === 'ArrowLeft') decide(p, null, rtl); }
@@ -524,7 +544,7 @@
     try {
       const [cats, products, visit] = await Promise.all([
         rest('categories?select=key,name_en,name_ar,emoji,sort&order=sort'),
-        rest('products?select=id,sku,category,sub_en,sub_ar,name_en,name_ar,desc_en,desc_ar,image_url,sort&active=eq.true&order=sort'),
+        rest('products?select=id,sku,category,sub_en,sub_ar,brand,name_en,name_ar,desc_en,desc_ar,image_url,image2_url,concerns,ingredients,sort&active=eq.true&order=sort'),
         startVisit().catch(async e => { console.warn('retry start_visit', e); await new Promise(r => setTimeout(r, 1500)); return startVisit(); })
       ]);
       S.cats = cats.filter(c => products.some(p => p.category === c.key));
