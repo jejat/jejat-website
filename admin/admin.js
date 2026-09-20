@@ -8,7 +8,7 @@
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const RES = { aleppo: 'Aleppo', damascus: 'Damascus', syria_other: 'Elsewhere in Syria', abroad: 'Abroad', unknown: 'Unknown' };
   const AGE = { '18_24': '18–24', '25_34': '25–34', '35_44': '35–44', '45_plus': '45+', unknown: 'Unknown' };
-  const EV = { landing: ['🚪', 'landed'], register: ['📝', 'registered'], click: ['👀', 'opened'], favorite_add: ['❤️', 'favorited'], favorite_remove: ['💔', 'unfavorited'], category: ['🏷️', 'browsed'], top_picks: ['🏆', 'saved top 25'], share: ['📣', 'shared'], lang: ['🌐', 'switched language'], tab: ['↔️', 'switched tab'] };
+  const EV = { pass: ['👋', 'passed on'], optout: ['🙅‍♀️', 'said not for me:'], optin: ['↩️', 'brought back'], suggestion: ['💭', 'suggested'], mode: ['⚡', 'switched mode'], subcategory: ['🏷️', 'filtered'], landing: ['🚪', 'landed'], register: ['📝', 'registered'], click: ['👀', 'opened'], favorite_add: ['❤️', 'favorited'], favorite_remove: ['💔', 'unfavorited'], category: ['🏷️', 'browsed'], top_picks: ['🏆', 'saved top 25'], share: ['📣', 'shared'], lang: ['🌐', 'switched language'], tab: ['↔️', 'switched tab'] };
   const flag = (cc) => cc && /^[A-Z]{2}$/.test(cc) ? String.fromCodePoint(...[...cc].map(c => 0x1F1E6 + c.charCodeAt(0) - 65)) : '🌍';
   const img = (u) => u ? (/^https?:/.test(u) ? u : SITE_ROOT + u) : '';
   const S = { session: null, page: 'overview', excl: true, products: [], visitors: [], cats: [], sort: { products: ['score', 1], visitors: ['last_seen_at', 1] }, timer: null };
@@ -104,7 +104,7 @@
     hbars($('chCountries'), (ov.countries || []).slice(0, 8).map(c => ({ key: c.country, n: c.n })), { label: (c) => flag(c) + ' ' + c });
     hbars($('chRes'), (ov.residence || []).map(c => ({ key: c.key, n: c.n })), { label: (k) => RES[k] || k });
     hbars($('chAge'), (ov.age || []).sort((a, b) => Object.keys(AGE).indexOf(a.key) - Object.keys(AGE).indexOf(b.key)).map(c => ({ key: c.key, n: c.n })), { label: (k) => AGE[k] || k });
-    $('feed').innerHTML = feed.length ? feed.map(e => { const [ic, verb] = EV[e.type] || ['•', e.type]; const what = e.product_name ? `<b>${esc(e.product_name)}</b>` : e.category ? `<b>${esc(e.category)}</b>` : e.meta?.tab ? `<b>${esc(e.meta.tab)}</b>` : e.meta?.count != null ? `<b>${e.meta.count} picks</b>` : ''; return `<div class="ev"><span class="ic">${ic}</span><span><span class="who">${flag(e.country)} ${esc(e.visitor_name)}</span> ${verb} ${what}</span><span class="t" title="${dt(e.at)}">${ago(e.at)}</span></div>`; }).join('') : '<div class="empty">No activity yet. Share the link!</div>';
+    $('feed').innerHTML = feed.length ? feed.map(e => { const [ic, verb] = EV[e.type] || ['•', e.type]; const what = e.product_name ? `<b>${esc(e.product_name)}</b>` : e.category ? `<b>${esc(e.category)}</b>` : e.meta?.tab ? `<b>${esc(e.meta.tab)}</b>` : e.meta?.count != null ? `<b>${e.meta.count} picks</b>` : e.meta?.text ? `<b>${esc(e.meta.text)}</b>` : e.meta?.mode ? `<b>${esc(e.meta.mode)}</b>` : ''; return `<div class="ev"><span class="ic">${ic}</span><span><span class="who">${flag(e.country)} ${esc(e.visitor_name)}</span> ${verb} ${what}</span><span class="t" title="${dt(e.at)}">${ago(e.at)}</span></div>`; }).join('') : '<div class="empty">No activity yet. Share the link!</div>';
     const rows = top.slice(0, 10);
     table($('topTable'), [
       { key: 'rank', label: '#', cell: (r, i) => `<span class="rank ${i < 3 ? 'top' : ''}">${i + 1}</span>` },
@@ -139,7 +139,7 @@
       { key: 'favorites', label: 'Favorites', r: true, cell: r => `<b>${fmt(r.favorites)}</b>` },
       { key: 'fav_rate', label: 'Fav rate', cell: r => `<div class="bar-cell"><span class="trk"><span class="fil heart" style="width:${Math.min(100, r.fav_rate)}%"></span></span><span class="num">${fmt(r.fav_rate, 1)}%</span></div>` },
       { key: 'clicks', label: 'Opened', r: true, cell: r => fmt(r.clicks) },
-      { key: 'click_rate', label: 'Open rate', r: true, cell: r => fmt(r.click_rate, 1) + '%' },
+      { key: 'passes', label: 'Passed', r: true, cell: r => r.passes ? `<span class="muted">${fmt(r.passes)}</span>` : '<span class="muted">–</span>' },
       { key: 'top_picks', label: 'Top 25', r: true, cell: r => fmt(r.top_picks) },
       { key: 'score', label: 'Score', r: true, cell: r => `<b>${fmt(r.score, 1)}</b>` },
     ], rows, S.sort.products);
@@ -205,9 +205,11 @@
 
   // ---------- categories ----------
   async function loadCategories() {
-    const rows = await rpc('admin_category_stats', { p_exclude_test: S.excl });
+    const [rows, sugg] = await Promise.all([rpc('admin_category_stats', { p_exclude_test: S.excl }), rpc('admin_suggestions', { p_exclude_test: S.excl })]);
     hbars($('chCatRate'), rows.map(r => ({ key: r.key, n: +r.fav_rate })), { suffix: '%', label: catName });
     hbars($('chCatTop'), rows.map(r => ({ key: r.key, n: +r.top_picks })), { label: catName });
+    $('caMeta').textContent = `${sugg.length} suggestions`;
+    $('suggList').innerHTML = sugg.length ? sugg.map(x => `<div class="ev"><span class="ic">💭</span><span><b>${esc(x.text)}</b> <span class="muted">· ${esc(catName(x.category))} · ${esc(x.visitor_name)}${x.residence ? ' · ' + (RES[x.residence] || x.residence) : ''}</span></span><span class="t" title="${dt(x.at)}">${ago(x.at)}</span></div>`).join('') : '<div class="empty">No suggestions yet</div>';
     table($('caTable'), [
       { key: 'name_en', label: 'Category', cell: r => `${r.emoji || ''} <b>${esc(r.name_en)}</b> <span class="sub" style="display:inline">${esc(r.name_ar)}</span>` },
       { key: 'products', label: 'Products', r: true, cell: r => fmt(r.products) },
@@ -216,6 +218,9 @@
       { key: 'fav_rate', label: 'Fav rate', r: true, cell: r => fmt(r.fav_rate, 1) + '%' },
       { key: 'clicks', label: 'Opened', r: true, cell: r => fmt(r.clicks) },
       { key: 'top_picks', label: 'Top 25 picks', r: true, cell: r => fmt(r.top_picks) },
+      { key: 'completed', label: 'Finished it', r: true, cell: r => fmt(r.completed) },
+      { key: 'optouts', label: 'Not for me', r: true, cell: r => r.optouts ? `<span class="tag test">${fmt(r.optouts)}</span>` : '<span class="muted">–</span>' },
+      { key: 'suggestions', label: 'Suggestions', r: true, cell: r => fmt(r.suggestions) },
     ], rows, ['fav_rate', 1]);
   }
 
@@ -251,7 +256,7 @@
   ['fCat'].forEach(id => $(id).onchange = renderProducts);
   $('fSearch').oninput = renderProducts;
   $('vFilter').onchange = renderVisitors; $('vSearch').oninput = renderVisitors;
-  $('prCsv').onclick = () => csv(sortRows(S.products, S.sort.products), [['rank', (r) => S.products.indexOf(r) + 1], ['sku', 'sku'], ['name_en', 'name_en'], ['name_ar', 'name_ar'], ['category', 'category'], ['seen_by', 'reach'], ['favorites', 'favorites'], ['fav_rate_pct', 'fav_rate'], ['opened', 'clicks'], ['top25_picks', 'top_picks'], ['score', 'score'], ['supplier_link', 'source_url']], `jejat-products-${new Date().toISOString().slice(0, 10)}.csv`);
+  $('prCsv').onclick = () => csv(sortRows(S.products, S.sort.products), [['rank', (r) => S.products.indexOf(r) + 1], ['sku', 'sku'], ['name_en', 'name_en'], ['name_ar', 'name_ar'], ['category', 'category'], ['seen_by', 'reach'], ['favorites', 'favorites'], ['fav_rate_pct', 'fav_rate'], ['opened', 'clicks'], ['passed', 'passes'], ['top25_picks', 'top_picks'], ['score', 'score'], ['supplier_link', 'source_url']], `jejat-products-${new Date().toISOString().slice(0, 10)}.csv`);
   $('viCsv').onclick = () => csv(S.visitors, [['first_name', 'first_name'], ['last_name', 'last_name'], ['email', 'email'], ['phone', 'phone'], ['residence', 'residence'], ['age', 'age_band'], ['country', 'country'], ['registered_at', 'registered_at'], ['last_seen_at', 'last_seen_at'], ['visits', 'sessions'], ['minutes', 'minutes'], ['seen', 'seen'], ['opened', 'clicks'], ['favorites', 'favorites'], ['top25', 'top_picks'], ['invite_code', 'referral_code'], ['invited_by', 'referred_by_name'], ['is_test', 'is_test']], `jejat-visitors-${new Date().toISOString().slice(0, 10)}.csv`);
   $('drawerBg').onclick = closeDrawer;
   addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });

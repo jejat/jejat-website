@@ -482,3 +482,175 @@ grant execute on function public.admin_live_feed(int, boolean) to authenticated;
 
 drop function if exists public.debug_headers();
 notify pgrst, 'reload schema';
+
+-- ============================================================
+-- v2 (20 Sep 2026): category-first UX
+-- sub-categories, "not for me" per category, suggestions, passes
+-- ============================================================
+alter table public.products add column if not exists sub_en text;
+alter table public.products add column if not exists sub_ar text;
+revoke select on public.products from anon;
+grant select (id, sku, category, sub_en, sub_ar, name_en, name_ar, desc_en, desc_ar, image_url, active, sort, created_at) on public.products to anon;
+
+create table if not exists public.category_optouts (
+  visitor_id  uuid not null references public.visitors(id) on delete cascade,
+  category    text not null references public.categories(key),
+  created_at  timestamptz not null default now(),
+  primary key (visitor_id, category)
+);
+create table if not exists public.suggestions (
+  id          bigserial primary key,
+  visitor_id  uuid references public.visitors(id) on delete cascade,
+  category    text,
+  text        text not null,
+  created_at  timestamptz not null default now()
+);
+alter table public.category_optouts enable row level security;
+alter table public.suggestions enable row level security;
+drop policy if exists optouts_admin_read on public.category_optouts;
+create policy optouts_admin_read on public.category_optouts for select to authenticated using (true);
+drop policy if exists suggestions_admin_read on public.suggestions;
+create policy suggestions_admin_read on public.suggestions for select to authenticated using (true);
+
+create or replace function public.toggle_category_optout(p_visitor uuid, p_session uuid, p_category text)
+returns boolean
+language plpgsql security definer set search_path = public as $$
+declare now_off boolean;
+begin
+  if exists (select 1 from public.category_optouts where visitor_id = p_visitor and category = p_category) then
+    delete from public.category_optouts where visitor_id = p_visitor and category = p_category; now_off := false;
+  else
+    insert into public.category_optouts (visitor_id, category) values (p_visitor, p_category) on conflict do nothing; now_off := true;
+  end if;
+  insert into public.events (visitor_id, session_id, type, category) values (p_visitor, p_session, case when now_off then 'optout' else 'optin' end, p_category);
+  return now_off;
+end $$;
+
+create or replace function public.add_suggestion(p_visitor uuid, p_session uuid, p_category text, p_text text)
+returns void
+language plpgsql security definer set search_path = public as $$
+begin
+  if coalesce(trim(p_text), '') = '' then return; end if;
+  insert into public.suggestions (visitor_id, category, text) values (p_visitor, p_category, left(trim(p_text), 300));
+  insert into public.events (visitor_id, session_id, type, category, meta) values (p_visitor, p_session, 'suggestion', p_category, jsonb_build_object('text', left(trim(p_text), 300)));
+end $$;
+
+-- start_visit now also returns opt-outs and passed products
+create or replace function public.start_visit(
+  p_visitor uuid, p_referred_by text default null, p_lang text default 'ar',
+  p_device text default null, p_ua text default null, p_referrer text default null,
+  p_screen text default null, p_is_test boolean default false)
+returns jsonb
+language plpgsql security definer set search_path = public as $$
+declare
+  v_country text := public.req_country();
+  v_session uuid;
+  v_new boolean := false;
+begin
+  if p_visitor is null then raise exception 'visitor id required'; end if;
+  insert into public.visitors (id, referred_by, lang, country, is_test, referral_code)
+  values (p_visitor, nullif(upper(p_referred_by), ''), p_lang, v_country, coalesce(p_is_test, false), public.gen_referral_code())
+  on conflict (id) do update
+    set last_seen_at = now(),
+        lang = coalesce(excluded.lang, public.visitors.lang),
+        country = coalesce(public.visitors.country, excluded.country),
+        is_test = public.visitors.is_test or excluded.is_test
+  returning (xmax = 0) into v_new;
+  insert into public.sessions (visitor_id, country, device, user_agent, referrer, lang, screen)
+  values (p_visitor, v_country, p_device, left(p_ua, 400), left(p_referrer, 400), p_lang, p_screen)
+  returning id into v_session;
+  insert into public.events (visitor_id, session_id, type, meta)
+  values (p_visitor, v_session, 'landing', jsonb_build_object('new', v_new, 'referred_by', nullif(upper(p_referred_by), '')));
+  return jsonb_build_object(
+    'session_id', v_session,
+    'profile', public.visitor_profile(p_visitor),
+    'favorites', coalesce((select jsonb_agg(product_id order by created_at) from public.favorites where visitor_id = p_visitor), '[]'::jsonb),
+    'top_picks', coalesce((select jsonb_agg(product_id order by rank) from public.top_picks where visitor_id = p_visitor), '[]'::jsonb),
+    'seen', coalesce((select jsonb_agg(product_id) from public.impressions where visitor_id = p_visitor), '[]'::jsonb),
+    'optouts', coalesce((select jsonb_agg(category) from public.category_optouts where visitor_id = p_visitor), '[]'::jsonb),
+    'passed', coalesce((select jsonb_agg(distinct product_id) from public.events where visitor_id = p_visitor and type = 'pass' and product_id is not null), '[]'::jsonb)
+  );
+end $$;
+
+-- admin: product stats gain a "passes" column
+drop function if exists public.admin_product_stats(boolean, text, text);
+create or replace function public.admin_product_stats(
+  p_exclude_test boolean default true, p_residence text default null, p_age_band text default null)
+returns table (
+  id int, sku text, category text, sub_en text, name_en text, name_ar text, image_url text, source_url text, active boolean,
+  reach bigint, favorites bigint, clicks bigint, passes bigint, top_picks bigint, fav_rate numeric, click_rate numeric, score numeric)
+language plpgsql security definer set search_path = public as $$
+begin
+  perform public.assert_admin();
+  return query
+  with vis as (
+    select v.id from public.visitors v
+    where not (p_exclude_test and v.is_test)
+      and (p_residence is null or v.residence = p_residence)
+      and (p_age_band is null or v.age_band = p_age_band)
+  ),
+  imp as (select i.product_id, count(*) n from public.impressions i join vis on vis.id = i.visitor_id group by 1),
+  fav as (select f.product_id, count(*) n from public.favorites f join vis on vis.id = f.visitor_id group by 1),
+  clk as (select e.product_id, count(*) n from public.events e join vis on vis.id = e.visitor_id where e.type = 'click' group by 1),
+  pas as (select e.product_id, count(distinct e.visitor_id) n from public.events e join vis on vis.id = e.visitor_id where e.type = 'pass' group by 1),
+  tp  as (select t.product_id, count(*) n from public.top_picks t join vis on vis.id = t.visitor_id group by 1)
+  select p.id, p.sku, p.category, p.sub_en, p.name_en, p.name_ar, p.image_url, p.source_url, p.active,
+    coalesce(imp.n, 0), coalesce(fav.n, 0), coalesce(clk.n, 0), coalesce(pas.n, 0), coalesce(tp.n, 0),
+    case when coalesce(imp.n, 0) > 0 then round(100.0 * coalesce(fav.n, 0) / imp.n, 1) else 0 end,
+    case when coalesce(imp.n, 0) > 0 then round(100.0 * coalesce(clk.n, 0) / imp.n, 1) else 0 end,
+    case when coalesce(imp.n, 0) > 0
+         then round(100.0 * (coalesce(fav.n, 0) + 2 * coalesce(tp.n, 0)) / (imp.n + 5), 1) else 0 end
+  from public.products p
+  left join imp on imp.product_id = p.id
+  left join fav on fav.product_id = p.id
+  left join clk on clk.product_id = p.id
+  left join pas on pas.product_id = p.id
+  left join tp  on tp.product_id = p.id
+  order by 17 desc, 11 desc, p.id;
+end $$;
+revoke execute on function public.admin_product_stats(boolean, text, text) from public, anon;
+grant execute on function public.admin_product_stats(boolean, text, text) to authenticated;
+
+-- admin: category stats gain opt-outs and suggestion counts
+drop function if exists public.admin_category_stats(boolean);
+create or replace function public.admin_category_stats(p_exclude_test boolean default true)
+returns table (key text, name_en text, name_ar text, emoji text, products bigint, reach bigint, favorites bigint, clicks bigint, top_picks bigint, fav_rate numeric, optouts bigint, completed bigint, suggestions bigint)
+language plpgsql security definer set search_path = public as $$
+begin
+  perform public.assert_admin();
+  return query
+  with vis as (select v.id from public.visitors v where not (p_exclude_test and v.is_test)),
+  catn as (select p.category, count(*) n from public.products p where p.active group by 1)
+  select c.key, c.name_en, c.name_ar, c.emoji,
+    (select count(*) from public.products p where p.category = c.key and p.active),
+    (select count(*) from public.impressions i join public.products p on p.id = i.product_id join vis on vis.id = i.visitor_id where p.category = c.key),
+    (select count(*) from public.favorites f join public.products p on p.id = f.product_id join vis on vis.id = f.visitor_id where p.category = c.key),
+    (select count(*) from public.events e join vis on vis.id = e.visitor_id where e.type = 'click' and e.category = c.key),
+    (select count(*) from public.top_picks t join public.products p on p.id = t.product_id join vis on vis.id = t.visitor_id where p.category = c.key),
+    (select case when count(i.*) > 0 then round(100.0 * (select count(*) from public.favorites f join public.products p on p.id = f.product_id join vis on vis.id = f.visitor_id where p.category = c.key) / count(i.*), 1) else 0 end
+       from public.impressions i join public.products p on p.id = i.product_id join vis on vis.id = i.visitor_id where p.category = c.key),
+    (select count(*) from public.category_optouts o join vis on vis.id = o.visitor_id where o.category = c.key),
+    (select count(*) from (select i.visitor_id from public.impressions i join public.products p on p.id = i.product_id join vis on vis.id = i.visitor_id where p.category = c.key group by i.visitor_id having count(*) >= (select n from catn where catn.category = c.key)) x),
+    (select count(*) from public.suggestions s join vis on vis.id = s.visitor_id where s.category = c.key)
+  from public.categories c
+  order by c.sort;
+end $$;
+revoke execute on function public.admin_category_stats(boolean) from public, anon;
+grant execute on function public.admin_category_stats(boolean) to authenticated;
+
+create or replace function public.admin_suggestions(p_exclude_test boolean default true)
+returns table (at timestamptz, category text, text text, visitor_id uuid, visitor_name text, residence text)
+language plpgsql security definer set search_path = public as $$
+begin
+  perform public.assert_admin();
+  return query
+  select s.created_at, s.category, s.text, v.id,
+    coalesce(nullif(trim(coalesce(v.first_name, '') || ' ' || coalesce(v.last_name, '')), ''), 'Anonymous'), v.residence
+  from public.suggestions s join public.visitors v on v.id = s.visitor_id
+  where not (p_exclude_test and v.is_test)
+  order by s.created_at desc limit 500;
+end $$;
+revoke execute on function public.admin_suggestions(boolean) from public, anon;
+grant execute on function public.admin_suggestions(boolean) to authenticated;
+
+notify pgrst, 'reload schema';
