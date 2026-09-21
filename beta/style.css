@@ -352,7 +352,7 @@ html[dir="rtl"] .track .walker { transform: translate(50%, -62%) scaleX(-1); }
   animation: cardin .6s var(--ease-pop) both;
 }
 @keyframes cardin { from { transform: translateY(30px) scale(.96); opacity: 0 } }
-.wcard .mascot { position: absolute; top: -58px; left: 50%; transform: translateX(-50%); width: 120px; animation: float 3s ease-in-out infinite; filter: drop-shadow(0 8px 14px rgba(120,80,30,.2)); }
+.wcard .mascot { position: absolute; top: -58px; left: 50%; transform: translateX(-50%); width: 120px; filter: drop-shadow(0 8px 14px rgba(120,80,30,.2)); }
 .wcard .wl { position: absolute; top: 14px; inset-inline-end: 14px; }
 .wcard h2 { font-family: var(--display); font-size: clamp(1.5rem, 5vw, 1.9rem); margin: 44px 0 4px; text-align: center; line-height: 1.2; }
 .wcard .lead { text-align: center; color: var(--ink-soft); margin: 0 0 16px; font-weight: 600; }
@@ -554,3 +554,13 @@ html[dir="rtl"] .qcard.fly-pass { transform: translate(120vw, -10vh) rotate(18de
 .hero-row .lang-pill { flex: 0 0 auto; }
 .dock button.bump { animation: bump .45s var(--ease-pop); }
 .pickbar { top: 40px; }
+
+/* ---- v8: dropdowns in the welcome card ---- */
+.field select {
+  width: 100%; min-width: 0; height: 48px; border-radius: 14px; border: 2px solid var(--line); background: var(--ground); padding: 0 14px;
+  font: inherit; font-weight: 600; color: var(--ink); appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%236E5F4E' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: left 14px center; background-size: 14px;
+}
+html[dir="ltr"] .field select { background-position: right 14px center; }
+.field select:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 4px rgba(247,148,29,.18); }

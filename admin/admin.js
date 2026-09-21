@@ -6,7 +6,7 @@
   const SITE_ROOT = location.origin + location.pathname.replace(/admin\/?.*$/, '');
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const RES = { aleppo: 'Aleppo', damascus: 'Damascus', syria_other: 'Elsewhere in Syria', abroad: 'Abroad', unknown: 'Unknown' };
+  const RES = { aleppo: 'Aleppo', damascus: 'Damascus', homs: 'Homs', hama: 'Hama', latakia: 'Latakia', tartus: 'Tartus', idlib: 'Idlib', deir_ezzor: 'Deir ez-Zor', syria_other: 'Elsewhere in Syria', abroad: 'Abroad', unknown: 'Unknown' };
   const AGE = { '18_24': '18–24', '25_34': '25–34', '35_44': '35–44', '45_plus': '45+', unknown: 'Unknown' };
   const EV = { pass: ['👋', 'passed on'], optout: ['🙅‍♀️', 'said not for me:'], optin: ['↩️', 'brought back'], suggestion: ['💭', 'suggested'], mode: ['⚡', 'switched mode'], subcategory: ['🏷️', 'filtered'], landing: ['🚪', 'landed'], register: ['📝', 'registered'], click: ['👀', 'opened'], favorite_add: ['❤️', 'favorited'], favorite_remove: ['💔', 'unfavorited'], category: ['🏷️', 'browsed'], top_picks: ['🏆', 'saved top 25'], share: ['📣', 'shared'], lang: ['🌐', 'switched language'], tab: ['↔️', 'switched tab'] };
   const flag = (cc) => cc && /^[A-Z]{2}$/.test(cc) ? String.fromCodePoint(...[...cc].map(c => 0x1F1E6 + c.charCodeAt(0) - 65)) : '🌍';

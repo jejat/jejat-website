@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://mbzzbfvletthtvixdxxm.supabase.co">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap">
-<link rel="stylesheet" href="style.css?v=7">
+<link rel="stylesheet" href="style.css?v=8">
 </head>
 <body class="locked">
 <div class="glow" aria-hidden="true"></div>
@@ -155,10 +155,11 @@
       <div class="field"><label for="fFirst" data-i="first_name"></label><input id="fFirst" name="first" autocomplete="given-name" required></div>
       <div class="field"><label for="fLast" data-i="last_name"></label><input id="fLast" name="last" autocomplete="family-name" required></div>
     </div>
-    <div class="field"><label for="fPhone"><span data-i="phone"></span> <span class="opt" data-i="optional"></span></label><input id="fPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="09xx xxx xxx" dir="ltr"></div>
     <div class="field"><label for="fEmail"><span data-i="email"></span> <span class="opt" data-i="optional"></span></label><input id="fEmail" name="email" type="email" inputmode="email" autocomplete="email" dir="ltr"></div>
-    <div class="field"><label data-i="residence"></label><div class="opts" id="resOpts"></div></div>
-    <div class="field"><label data-i="age"></label><div class="opts" id="ageOpts"></div></div>
+    <div class="two">
+      <div class="field"><label for="fRes" data-i="residence"></label><select id="fRes"></select></div>
+      <div class="field"><label for="fAge" data-i="age"></label><select id="fAge"></select></div>
+    </div>
     <div class="err" id="werr"></div>
     <button class="btn go" type="submit" data-i="start"></button>
     <p class="note" data-i="privacy"></p>
@@ -168,6 +169,6 @@
 <div class="toasts" id="toasts"></div>
 <canvas id="confetti" hidden></canvas>
 
-<script src="app.js?v=9"></script>
+<script src="app.js?v=10"></script>
 </body>
 </html>

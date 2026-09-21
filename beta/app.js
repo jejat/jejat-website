@@ -14,10 +14,10 @@
     ar: {
       loading: 'عم نحضّر المنتجات…',
       welcome_title: 'أهلاً فيكِ بجيجات 🧡',
-      welcome_sub: 'خلينا نعرف شو بتحبي. اختاري كل منتج بتتمني يوصل لعندك بحلب، ونحنا منجيبه.',
+      welcome_sub: 'ساعدينا نعرف شو المنتجات اللي بتحبي تشوفيها بحلب.',
       first_name: 'الاسم الأول', last_name: 'الكنية', phone: 'رقم الموبايل', email: 'الإيميل', optional: '(اختياري)',
       residence: 'وين ساكنة؟', age: 'عمرك؟',
-      res_aleppo: 'حلب', res_damascus: 'دمشق', res_syria_other: 'مدينة سورية ثانية', res_abroad: 'خارج سوريا',
+      res_aleppo: 'حلب', res_damascus: 'دمشق', res_homs: 'حمص', res_hama: 'حماة', res_latakia: 'اللاذقية', res_tartus: 'طرطوس', res_idlib: 'إدلب', res_deir_ezzor: 'دير الزور', res_abroad: 'خارج سوريا',
       age_18_24: '18 – 24', age_25_34: '25 – 34', age_35_44: '35 – 44', age_45_plus: '45+',
       start: 'يلا نبلش ✨',
       privacy: 'معلوماتك بتضل عنا وما منشاركها مع حدا.',
@@ -51,10 +51,10 @@
     en: {
       loading: 'Preparing the products…',
       welcome_title: 'Welcome to Jejat 🧡',
-      welcome_sub: 'Help us learn what you love. Pick every product you wish could reach you in Aleppo, and we will bring it.',
+      welcome_sub: 'Help us learn what products you would like to see in Aleppo.',
       first_name: 'First name', last_name: 'Last name', phone: 'Phone number', email: 'Email', optional: '(optional)',
       residence: 'Where do you live?', age: 'Your age?',
-      res_aleppo: 'Aleppo', res_damascus: 'Damascus', res_syria_other: 'Elsewhere in Syria', res_abroad: 'Outside Syria',
+      res_aleppo: 'Aleppo', res_damascus: 'Damascus', res_homs: 'Homs', res_hama: 'Hama', res_latakia: 'Latakia', res_tartus: 'Tartus', res_idlib: 'Idlib', res_deir_ezzor: 'Deir ez-Zor', res_abroad: 'Outside Syria',
       age_18_24: '18 – 24', age_25_34: '25 – 34', age_35_44: '35 – 44', age_45_plus: '45+',
       start: "Let's go ✨",
       privacy: 'Your details stay with us and are never shared.',
@@ -93,7 +93,7 @@
           hyaluronic: 'هيالورونيك', aha: 'AHA / PHA', bha: 'BHA', retinol: 'ريتينول', centella: 'سنتيلا', ceramide: 'سيراميد', niacinamide: 'نياسيناميد', peptide: 'ببتيد', vitamin_c: 'فيتامين C', pdrn: 'PDRN', collagen: 'كولاجين' }
   };
   const tag = (k) => TAGS[S.lang][k] || TAGS.en[k] || k;
-  const RES = ['aleppo', 'damascus', 'syria_other', 'abroad'];
+  const RES = ['aleppo', 'damascus', 'homs', 'hama', 'latakia', 'tartus', 'idlib', 'deir_ezzor', 'abroad'];
   const AGE = ['18_24', '25_34', '35_44', '45_plus'];
 
   // ---------- state ----------
@@ -158,16 +158,17 @@
 
   // ---------- welcome ----------
   function renderOptions() {
-    const mk = (id, keys, prefix) => {
-      const box = $(id); const cur = box.dataset.value || ''; box.innerHTML = '';
-      keys.forEach(k => { const b = document.createElement('button'); b.type = 'button'; b.className = 'opt-chip' + (cur === k ? ' on' : ''); b.textContent = t(prefix + k); b.dataset.v = k; b.onclick = () => { box.dataset.value = k; box.querySelectorAll('.opt-chip').forEach(x => x.classList.toggle('on', x === b)); }; box.appendChild(b); });
+    const mk = (id, keys, prefix, def) => {
+      const sel = $(id); const cur = sel.value || def; sel.innerHTML = '';
+      keys.forEach(k => { const o = document.createElement('option'); o.value = k; o.textContent = t(prefix + k); sel.appendChild(o); });
+      sel.value = cur;
     };
-    mk('resOpts', RES, 'res_'); mk('ageOpts', AGE, 'age_');
+    mk('fRes', RES, 'res_', 'aleppo'); mk('fAge', AGE, 'age_', '25_34');
   }
   async function submitWelcome(e) {
     e.preventDefault();
-    const first = $('fFirst').value.trim(), last = $('fLast').value.trim(), email = $('fEmail').value.trim(), phone = $('fPhone').value.trim();
-    const res = $('resOpts').dataset.value || '', age = $('ageOpts').dataset.value || '', err = $('werr');
+    const first = $('fFirst').value.trim(), last = $('fLast').value.trim(), email = $('fEmail').value.trim(), phone = '';
+    const res = $('fRes').value, age = $('fAge').value, err = $('werr');
     $('fFirst').classList.toggle('bad', !first); $('fLast').classList.toggle('bad', !last);
     if (!first || !last) { err.textContent = t('err_names'); return; }
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = t('err_email'); $('fEmail').classList.add('bad'); return; }
