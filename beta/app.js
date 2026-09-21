@@ -476,7 +476,15 @@
     $('sheetDots').hidden = imgs.length < 2; $('sheetDots').innerHTML = imgs.map((_, i) => `<i class="${i === S.sheetImg % imgs.length ? 'on' : ''}"></i>`).join('');
   }
   function renderSwatches(p) {
-    const box = $('sheetColours'); const vs = (p.variants || []).filter(v => v.images && v.images.length);
+    const box = $('sheetColours'); const all = p.variants || []; const vs = all.filter(v => v.images && v.images.length);
+    if (vs.length < 2 && all.length > 1) {
+      // shades without photos (makeup): show the names as chips, first 14 then a count
+      const MAX = 14; const names = all.map(v => S.lang === 'ar' ? v.colour_ar : v.colour_en).filter(Boolean);
+      box.hidden = false; box.classList.add('names');
+      box.innerHTML = names.slice(0, MAX).map(n => `<span class="shade">${n}</span>`).join('') + (names.length > MAX ? `<span class="shade more">+${names.length - MAX}</span>` : '');
+      return;
+    }
+    box.classList.remove('names');
     box.hidden = vs.length < 2; if (vs.length < 2) { box.innerHTML = ''; return; }
     box.innerHTML = vs.map((v, i) => `<button class="sw ${i === S.sheetVar ? 'on' : ''}" data-i="${i}" title="${S.lang === 'ar' ? v.colour_ar : v.colour_en}"><img src="${/^https?:/.test(v.images[0]) ? v.images[0] : SITE_ROOT + v.images[0]}" alt=""><span>${S.lang === 'ar' ? v.colour_ar : v.colour_en}</span></button>`).join('');
     box.querySelectorAll('.sw').forEach(b => b.onclick = () => { S.sheetVar = +b.dataset.i; S.sheetImg = 0; setSheetImg(p); box.querySelectorAll('.sw').forEach(x => x.classList.toggle('on', x === b)); const v = vs[S.sheetVar]; if (v.price != null) $('sheetPrice').textContent = money({ price: v.price, currency: p.currency }); track('click', p.id, p.category, { via: 'colour', colour: v.colour_en }); });

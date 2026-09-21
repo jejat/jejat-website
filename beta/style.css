@@ -541,3 +541,8 @@ html[dir="rtl"] .qcard.fly-pass { transform: translate(120vw, -10vh) rotate(18de
 .sheet-body .sw span { font-size: .66rem; font-weight: 700; color: var(--ink-soft); max-width: 58px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .sheet-body .sw.on img { border-color: var(--orange); transform: scale(1.06); }
 .sheet-body .sw.on span { color: var(--orange-deep); }
+
+/* ---- v6: shade names as chips ---- */
+.sheet-body .colours.names { flex-wrap: wrap; overflow: visible; gap: 5px; }
+.sheet-body .shade { font-size: .72rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--cream); color: var(--ink-soft); direction: ltr; unicode-bidi: isolate; }
+.sheet-body .shade.more { background: var(--orange-soft); color: var(--ink); }
