@@ -11,25 +11,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://mbzzbfvletthtvixdxxm.supabase.co">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap">
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style.css?v=7">
 </head>
 <body class="locked">
 <div class="glow" aria-hidden="true"></div>
 
 <!-- ===== header ===== -->
 <header class="top">
-  <div class="top-row">
-    <a class="brand" href="./" aria-label="Jejat.com">
-      <img src="../assets/chicken-logo.png" alt="" width="40">
-      <span class="wordmark">Jejat<span class="dotcom">.com</span></span>
-    </a>
-    <span class="top-spacer"></span>
-    <button class="pill lang-pill" id="langBtn" aria-label="Language"><span data-l="ar">ع</span>&nbsp;·&nbsp;<span data-l="en">EN</span></button>
-    <button class="pill fav-pill" id="favPill" aria-label="Favorites">
-      <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.1C.7 8.2 3.1 4.5 6.8 4.5c2 0 3.4 1 4.2 2.3.8-1.3 2.2-2.3 4.2-2.3 3.7 0 6.1 3.7 4.4 7.4C19.5 16.4 12 21 12 21z"/></svg>
-      <span class="n" id="favCount">0</span>
-    </button>
-  </div>
   <div class="progress" id="progress">
     <div class="track"><div class="fill" id="progFill"></div><img class="walker" id="walker" src="../assets/chicken-logo.png" alt=""></div>
     <span class="label" id="progLabel"></span>
@@ -40,7 +28,10 @@
   <!-- ===== home: category tiles ===== -->
   <section class="view on" id="viewHome">
     <div class="hero">
-      <h1 id="greet"></h1>
+      <div class="hero-row">
+        <h1 id="greet"></h1>
+        <button class="pill lang-pill" id="langBtn" aria-label="Language"><span data-l="ar">ع</span>&nbsp;·&nbsp;<span data-l="en">EN</span></button>
+      </div>
       <p id="tagline"></p>
     </div>
     <div class="loader" id="loader"><img src="../assets/chicken-logo.png" alt=""><div data-i="loading"></div></div>
@@ -181,6 +172,6 @@
 <div class="toasts" id="toasts"></div>
 <canvas id="confetti" hidden></canvas>
 
-<script src="app.js?v=7"></script>
+<script src="app.js?v=8"></script>
 </body>
 </html>

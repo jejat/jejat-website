@@ -407,7 +407,7 @@
   function syncHearts(id, on, sourceEl) {
     document.querySelectorAll(`.card[data-id="${id}"] .heart`).forEach(h => { h.classList.toggle('on', on); if (on) { h.classList.remove('pop'); void h.offsetWidth; h.classList.add('pop'); if (h === sourceEl || !sourceEl) sparkle(h); } });
     if (S.sheetIdx >= 0 && S.sheetList[S.sheetIdx]?.id === id) fillSheetHeart();
-    if (on) { const pill = $('favPill'); pill.classList.remove('bump'); void pill.offsetWidth; pill.classList.add('bump'); }
+    if (on) { const b = $('dockFav'); b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump'); }
   }
   function sparkle(el) {
     const colors = ['#E8446B', '#F7941D', '#FFD9AE', '#FF8FA3', '#FFC857'];
@@ -415,7 +415,7 @@
   }
   function updateFavUI() {
     const n = S.favorites.size;
-    $('favCount').textContent = n; $('favCount2').textContent = n; $('favBadge').textContent = n; $('favBadge').hidden = n === 0;
+    $('favCount2').textContent = n; $('favBadge').textContent = n; $('favBadge').hidden = n === 0;
     const has = S.topPicks.length > 0;
     $('topCta').hidden = S.picking || has || n < 3; $('topBtn').hidden = S.picking || !has; $('topBtn').textContent = t('top_edit');
     $('favEmpty').hidden = n > 0;
@@ -540,8 +540,7 @@
 
     $('langBtn').onclick = $('langBtn2').onclick = () => applyLang(S.lang === 'ar' ? 'en' : 'ar', true);
     $('wform').onsubmit = submitWelcome;
-    $('favPill').onclick = () => showView('fav');
-    $('dockHome').onclick = () => showView('home'); $('dockFav').onclick = () => showView('fav'); $('dockShare').onclick = share;
+        $('dockHome').onclick = () => showView('home'); $('dockFav').onclick = () => showView('fav'); $('dockShare').onclick = share;
     $('catBack').onclick = () => showView('home'); $('catDoneBtn').onclick = () => showView('home');
     $('allDoneBtn').onclick = () => { showView('fav'); if (S.favorites.size) startPicking(); };
     $('modeGrid').onclick = () => setMode('grid', true); $('modeQuick').onclick = () => setMode('quick', true);

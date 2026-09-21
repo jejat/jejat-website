@@ -546,3 +546,11 @@ html[dir="rtl"] .qcard.fly-pass { transform: translate(120vw, -10vh) rotate(18de
 .sheet-body .colours.names { flex-wrap: wrap; overflow: visible; gap: 5px; }
 .sheet-body .shade { font-size: .72rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--cream); color: var(--ink-soft); direction: ltr; unicode-bidi: isolate; }
 .sheet-body .shade.more { background: var(--orange-soft); color: var(--ink); }
+
+/* ---- v7: no top bar; language toggle on the greeting line ---- */
+.top { padding-top: 6px; }
+.progress { padding-top: 6px; }
+.hero-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.hero-row .lang-pill { flex: 0 0 auto; }
+.dock button.bump { animation: bump .45s var(--ease-pop); }
+.pickbar { top: 40px; }
