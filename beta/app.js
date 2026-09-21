@@ -201,7 +201,7 @@
       const st = catStats(c.key); const list = S.byCat.get(c.key) || [];
       if (!st.done && !st.off) allDone = false;
       const previews = (c.preview_images && c.preview_images.length) ? c.preview_images : list.slice(0, 3).map(p => p.image_url);
-      const pics = previews.slice(0, 3).map(u => `<img src="${/^https?:/.test(u) ? u : SITE_ROOT + u}" alt="" loading="lazy">`).join('');
+      const pics = previews.slice(0, 3).map(u => `<span class="pic"><img src="${/^https?:/.test(u) ? u : SITE_ROOT + u}" alt="" loading="lazy"></span>`).join('');
       const tile = document.createElement('button');
       tile.className = 'tile' + (st.done ? ' done' : '') + (st.off ? ' off' : '');
       tile.style.setProperty('--tint', `var(--tint-${c.key}, var(--cream))`);
