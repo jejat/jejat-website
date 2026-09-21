@@ -385,7 +385,7 @@
   // ---------- progress & greeting ----------
   function updateProgress() {
     const total = S.products.length || 1, n = Math.min(S.seen.size, total), pct = Math.round(100 * n / total);
-    $('progFill').style.width = pct + '%'; $('walker').style.insetInlineStart = pct + '%';
+    $('progFill').style.width = pct + '%';
     $('progLabel').textContent = t('seen', { n, total });
   }
   function updateGreeting() { const name = S.profile?.first_name; $('greet').innerHTML = name ? t('greet', { name }) : t('greet_anon'); $('tagline').textContent = t('tagline'); }
@@ -540,7 +540,7 @@
 
     $('langBtn').onclick = $('langBtn2').onclick = () => applyLang(S.lang === 'ar' ? 'en' : 'ar', true);
     $('wform').onsubmit = submitWelcome;
-        $('dockHome').onclick = () => showView('home'); $('dockFav').onclick = () => showView('fav'); $('dockShare').onclick = share;
+        $('dockHome').onclick = () => showView('home'); $('dockFav').onclick = () => showView('fav');
     $('catBack').onclick = () => showView('home'); $('catDoneBtn').onclick = () => showView('home');
     $('allDoneBtn').onclick = () => { showView('fav'); if (S.favorites.size) startPicking(); };
     $('modeGrid').onclick = () => setMode('grid', true); $('modeQuick').onclick = () => setMode('quick', true);
