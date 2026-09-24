@@ -603,6 +603,8 @@
   .cat { display: inline-flex; align-items: center; gap: 7px; background: #fff; border: 2px solid var(--line); border-radius: 999px; padding: 6px 12px 6px 10px; font-family: var(--display); font-weight: 700; font-size: 0.9rem; }
   .cat b { background: var(--orange); color: #fff; border-radius: 999px; padding: 1px 9px; font-size: 0.8rem; font-variant-numeric: tabular-nums; }
   .cat b::after { content: ""; }
+  .cats-row { margin-top: 16px; gap: 12px; }
+  .cats-row .cat { font-size: 1rem; padding: 8px 16px 8px 13px; }
   @media (max-width: 740px) { .node { flex-basis: 92px; } }
 
   @media (prefers-reduced-motion: reduce) {
@@ -778,18 +780,13 @@
       </div>
     </div>
 
-    <div class="cards c2">
+    <div class="cards">
       <div class="card accent rv">
         <h3>Built for the woman who runs the household</h3>
-        <p>She decides what the family buys, she is already on Instagram and TikTok, and she is the one the street overcharges most. Jejat is designed around her: quality first, honest prices, delivered to her door.</p>
-      </div>
-      <div class="card rv d1">
-        <h3>We do not guess what Aleppo wants</h3>
-        <p>We test 500 products at 20 units each and reorder the winners.</p>
-        <div class="cats">
+        <div class="cats cats-row">
           <span class="cat">💄 Beauty</span>
           <span class="cat">👜 Accessories</span>
-          <span class="cat">🍼 Babies</span>
+          <span class="cat">🍼 Baby goods</span>
           <span class="cat">💇‍♀️ Women's electronics</span>
           <span class="cat">🏠 Household</span>
         </div>
