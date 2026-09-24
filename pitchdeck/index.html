@@ -349,6 +349,8 @@
   .demos { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 18px; margin-top: 36px; position: relative; }
   .demo-card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 26px 22px; }
   .demo-card h3 { font-family: var(--display); font-weight: 700; font-size: 1.15rem; margin: 16px 0 6px; }
+  .demo-card h3.demo-title { margin: 0 0 14px; }
+  .demo-card .demo-stage + p { margin-top: 16px; }
   .demo-card p { margin: 0; color: var(--muted); font-size: 0.95rem; }
   .demo-stage { height: 250px; display: flex; align-items: center; justify-content: center; }
   .live-dot {
@@ -873,7 +875,7 @@
       <div class="belt" aria-hidden="true"><div class="pkg" id="beltPkg"></div></div>
 
       <div class="demo-card rv">
-        <span class="live-dot">Live demo</span>
+        <h3 class="demo-title">1. Customer app &amp; website</h3>
         <div class="demo-stage">
           <div class="phone">
             <div class="bar">Jejat.com <span class="cartb" id="cartB">0</span></div>
@@ -898,12 +900,11 @@
             </div>
           </div>
         </div>
-        <h3>1. Customer app &amp; website</h3>
         <p>Browse and order in Arabic · Cash on delivery + e-payment · Live order tracking.</p>
       </div>
 
       <div class="demo-card rv d1">
-        <span class="live-dot">Live demo</span>
+        <h3 class="demo-title">2. Driver app</h3>
         <div class="demo-stage">
           <div class="phone">
             <div class="bar">Driver · Route 4</div>
@@ -930,19 +931,17 @@
             <div class="eta" id="eta">Next stop: 4 min</div>
           </div>
         </div>
-        <h3>2. Driver app</h3>
         <p>Pickup &amp; drop-off assignments · Optimized delivery routes · Proof of delivery, cash log.</p>
       </div>
 
       <div class="demo-card rv d2">
-        <span class="live-dot">Live demo</span>
+        <h3 class="demo-title">3. Warehouse OS</h3>
         <div class="demo-stage">
           <div class="screen">
             <div class="sbar">Stock: Warehouse 3 <span class="ok" id="whStatus">● synced</span></div>
             <div class="wrows" id="wrows"></div>
           </div>
         </div>
-        <h3>3. Warehouse OS</h3>
         <p>Live stock across 5 warehouses · Barcode scanning in &amp; out · Low-stock and reorder alerts.</p>
       </div>
     </div>
