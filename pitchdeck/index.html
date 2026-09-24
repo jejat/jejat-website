@@ -156,6 +156,8 @@
     font-variant-numeric: tabular-nums;
   }
   .card .big-word { font-size: clamp(2rem, 3.4vw, 2.7rem); line-height: 1.05; }
+  .card .struck { position: relative; display: inline-block; font-size: clamp(2rem, 3.4vw, 2.7rem); line-height: 1.05; }
+  .card .struck::after { content: ""; position: absolute; left: -3%; right: -3%; top: 50%; height: 0.11em; background: var(--ink); border-radius: 999px; transform: translateY(-50%) rotate(-3deg); }
   .card h3 { font-family: var(--display); font-weight: 700; font-size: 1.16rem; margin: 10px 0 6px; }
   .card p { margin: 0; color: var(--muted); font-size: 0.98rem; }
   .card .foot { margin-top: 12px; font-weight: 800; font-size: 0.92rem; color: var(--orange-deep); }
@@ -834,8 +836,8 @@
     <h2 class="sw" data-split>Zero rent. Zero dev cost.</h2>
     <div class="adv-grid">
       <div class="card rv tilt">
-        <div class="big"><span data-count="45000" data-dur="1800" data-group="1">0</span> m²</div>
-        <h3>5 family warehouses, 15 min from Aleppo center</h3>
+        <div class="big struck">Rent $20,000</div>
+        <h3>5 family warehouses, 45,000 m², 15 min from Aleppo center</h3>
         <p>Family-owned warehouses and land at the edge of the city: storage, sorting and fleet parking at $0 rent. Warehousing is the #1 fixed cost of inventory e-commerce. Ours is zero, and next-day delivery starts 15 minutes from our customers.</p>
         <div class="radar" aria-hidden="true">
           <div class="ring"></div><div class="ring r2"></div>
@@ -849,7 +851,7 @@
         <p class="foot">What competitors pay: a yearly lease on every m².</p>
       </div>
       <div class="card rv d1 tilt">
-        <div class="big">$0</div>
+        <div class="big struck">Tech $30,000</div>
         <h3>Tech built entirely by the founder</h3>
         <p>The full platform is designed and coded by the founder. Competitors pay an agency $100k or more and wait 6–12 months for a first version, then pay again for every change. We ship improvements the same day, at no cost.</p>
         <div class="terminal" id="terminal" aria-hidden="true"><span class="p">jejat@warehouse:~$</span> <span id="termLine"></span><span class="cursor"></span><div id="termOut"></div></div>
